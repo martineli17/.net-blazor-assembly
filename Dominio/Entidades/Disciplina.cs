@@ -5,6 +5,7 @@ namespace Dominio.Entidades
 {
     public class Disciplina : Base
     {
+        public Guid IdCurso { get; private set; }
         public double CargaHoraria { get; private set; }
         public double Nota { get; private set; }
         public double NotaMinimaAprovacao { get; private set; }

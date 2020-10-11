@@ -4,6 +4,7 @@ namespace Dominio.Entidades
 {
     public class Aluno : Base
     {
+        public Guid IdCurso { get; private set; }
         public string Cpf { get; private set; }
         public DateTime DataNascimento { get; private set; }
         public Curso Curso { get; private set; }
