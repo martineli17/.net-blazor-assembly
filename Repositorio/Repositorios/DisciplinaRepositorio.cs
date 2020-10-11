@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Dominio.Entidades;
+using Microsoft.EntityFrameworkCore;
+using Repositorio.Contexto;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Repositorio.Repositorios
 {
-    public class DisciplinaRepositorio
+    public class DisciplinaRepositorio : BaseRepositorio<Disciplina>
     {
+        public DisciplinaRepositorio(Context context) : base(context)
+        {
+        }
+
+        public async override Task<IQueryable<Disciplina>> GetAsync(Func<Disciplina, bool> query = null)
+        {
+            await Task.Yield();
+            return Context.Disciplina.Include(x => x.Curso).Where(query).AsQueryable();
+        }
     }
 }
