@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Crosscuting.Notificacao;
+using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
 using Repositorio.Contexto;
 using System;
@@ -10,16 +11,18 @@ namespace Repositorio.Repositorios
 {
     public class BaseRepositorio<TEntity> : IBaseRepositorio<TEntity> where TEntity : Base
     {
-        protected Context Context;
+        protected readonly Context Context;
+        protected readonly INotificador Notificador;
 
-        public BaseRepositorio(Context context)
+        public BaseRepositorio(Context context, INotificador notificador)
         {
             Context = context;
+            Notificador = notificador;
         }
 
-        public virtual async Task AddAynsc(TEntity entidade) => await Context.Set<TEntity>().AddAsync(entidade);
+        public virtual async Task AddAsync(TEntity entidade) => await Context.Set<TEntity>().AddAsync(entidade);
 
-        public virtual async Task AddAynsc(IEnumerable<TEntity> entidades) => await Context.Set<TEntity>().AddRangeAsync(entidades);
+        public virtual async Task AddAsync(IEnumerable<TEntity> entidades) => await Context.Set<TEntity>().AddRangeAsync(entidades);
 
         public virtual async Task<IQueryable<TEntity>> GetAsync(Func<TEntity, bool> query = null)
         {
@@ -29,7 +32,16 @@ namespace Repositorio.Repositorios
 
         public virtual async Task<TEntity> GetByIdAsync(Guid id) => await Context.Set<TEntity>().FindAsync(id);
 
-        public virtual async Task RemoveAsync(Guid id) => Context.Set<TEntity>().Remove(await GetByIdAsync(id));
+        public virtual async Task RemoveAsync(Guid id)
+        {
+            var entidade = await GetByIdAsync(id);
+            if (entidade == null)
+            {
+                Notificador.Add("Registro não encontrado.");
+                return;
+            }
+            Context.Set<TEntity>().Remove(entidade);
+        }
 
         public virtual async Task RemoveAsync(IEnumerable<Guid> id)
         {

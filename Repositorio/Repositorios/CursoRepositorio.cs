@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Crosscuting.Notificacao;
+using Dominio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Repositorio.Contexto;
 using System;
@@ -9,7 +10,7 @@ namespace Repositorio.Repositorios
 {
     public class CursoRepositorio : BaseRepositorio<Curso>
     {
-        public CursoRepositorio(Context context) : base(context)
+        public CursoRepositorio(Context context, INotificador notificador) : base(context, notificador)
         {
         }
 

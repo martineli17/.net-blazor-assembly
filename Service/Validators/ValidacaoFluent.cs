@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Service.Validators
 {
-    public class Validator
+    public class ValidacaoFluent
     {
         private readonly INotificador _notificador;
-        public Validator(INotificador notificador)
+        public ValidacaoFluent(INotificador notificador)
         {
             _notificador = notificador;
         }
@@ -20,7 +20,7 @@ namespace Service.Validators
         }
     }
 
-    public interface IValidator 
+    public interface IValidacaoFluent 
     {
         bool Executar<TValidator, TObject>(TValidator validator, TObject objeto) where TValidator : AbstractValidator<TObject>;
     }

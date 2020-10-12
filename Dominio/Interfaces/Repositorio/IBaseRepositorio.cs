@@ -8,8 +8,8 @@ namespace Dominio.Interfaces.Repositorio
 {
     public interface IBaseRepositorio<TEntidade> where TEntidade : Base
     {
-        Task AddAynsc(TEntidade entidade);
-        Task AddAynsc(IEnumerable<TEntidade> entidade);
+        Task AddAsync(TEntidade entidade);
+        Task AddAsync(IEnumerable<TEntidade> entidade);
         Task RemoveAsync(Guid id);
         Task RemoveAsync(IEnumerable<Guid> id);
         Task UpdateAsync(TEntidade entidade);
