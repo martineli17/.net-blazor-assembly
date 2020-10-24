@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dominio.Entidades
 {
@@ -8,6 +9,7 @@ namespace Dominio.Entidades
         public string Cpf { get; private set; }
         public DateTime DataNascimento { get; private set; }
         public Curso Curso { get; private set; }
+        public IEnumerable<AlunoDisciplina> AlunoDisciplina { get; private set; }
         public Aluno(Guid id, string nome) : base(id, nome) { }
         public Aluno()
         {

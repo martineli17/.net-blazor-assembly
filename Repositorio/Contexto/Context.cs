@@ -13,6 +13,7 @@ namespace Repositorio.Contexto
         public DbSet<Aluno> Aluno { get; set; }
         public DbSet<Disciplina> Disciplina { get; set; }
         public DbSet<Curso> Curso { get; set; }
+        public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

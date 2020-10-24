@@ -16,6 +16,7 @@ namespace Repositorio.Mapeamento
             builder.Property(x => x.Cpf).HasColumnName("CPF").HasColumnType("varchar(11)").IsRequired().HasMaxLength(11).IsUnicode(false);
             builder.Property(x => x.DataNascimento).HasColumnName("DATANASCIMENTO").HasColumnType("datetime").IsRequired();
             builder.HasOne(aluno => aluno.Curso).WithMany(curso => curso.Alunos).HasForeignKey(x => x.IdCurso).IsRequired();
+            builder.HasMany(aluno => aluno.AlunoDisciplina).WithOne(alunoDisciplina => alunoDisciplina.Aluno).HasForeignKey(x => x.IdAluno).IsRequired();
         }
     }
 }
