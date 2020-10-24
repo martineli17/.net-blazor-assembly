@@ -13,7 +13,7 @@ namespace Service.Validators.ValidatorsEntidades
         public CursoValidator()
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage(MensagemValidator.ErroNoProcesso);
-            RuleFor(x => x.Nome).NotNull().MaximumLength(60).WithMessage(MensagemValidator.NaoNuloOuVazio("Nome"));
+            RuleFor(x => x.Nome).NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("Nome")).MaximumLength(60).WithMessage(MensagemValidator.TamanhoMaximo("Nome"));
             RuleFor(x => x.Turno).NotEmpty().IsInEnum().WithMessage(MensagemValidator.IsEnum("Turno"));
         }
     }
