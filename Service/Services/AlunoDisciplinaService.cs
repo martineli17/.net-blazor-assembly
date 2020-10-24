@@ -6,7 +6,8 @@ namespace Service.Services
 {
     public class AlunoDisciplinaService : BaseService<AlunoDisciplina>
     {
-        public AlunoDisciplinaService(IBaseRepositorio<AlunoDisciplina> repositorio, InjectorServiceBase injector) : base(repositorio, injector)
+        public AlunoDisciplinaService(IBaseRepositorio<AlunoDisciplina> repositorio, InjectorServiceBase injector) 
+            : base(repositorio, injector)
         {
 
         }

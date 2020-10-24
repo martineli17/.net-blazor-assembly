@@ -13,6 +13,7 @@ namespace Service.Validators.ValidadorBase
         }
         public bool Executar<TValidator, TObject>(TValidator validator, TObject objeto) where TValidator : AbstractValidator<TObject>
         {
+            if (objeto == null) _notificador.Add("Dados não informados.");
             var validacao = validator.Validate(objeto);
             if (!validacao.IsValid)
                 _notificador.AddRange(validacao.Errors.Select(x => x.ErrorMessage).ToList(), EnumTipoMensagem.Warning);
