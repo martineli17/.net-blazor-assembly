@@ -2,7 +2,7 @@
 using FluentValidation;
 using System.Linq;
 
-namespace Service.Validators
+namespace Service.Validators.ValidadorBase
 {
     public class ValidacaoFluent
     {
@@ -20,7 +20,7 @@ namespace Service.Validators
         }
     }
 
-    public interface IValidacaoFluent 
+    public interface IValidacaoFluent
     {
         bool Executar<TValidator, TObject>(TValidator validator, TObject objeto) where TValidator : AbstractValidator<TObject>;
     }

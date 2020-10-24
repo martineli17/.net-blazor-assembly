@@ -1,12 +1,12 @@
 ﻿using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
-using Service.Validators;
+using Service.Services.ServicesBase;
 
 namespace Service.Services
 {
     public class CursoService : BaseService<Curso>
     {
-        public CursoService(ICursoRepositorio repositorio, IValidacaoFluent validation) : base(repositorio, validation)
+        public CursoService(ICursoRepositorio repositorio, InjectorServiceBase injector) : base(repositorio, injector)
         {
                 
         }

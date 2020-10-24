@@ -1,5 +1,6 @@
 ﻿using Dominio.ValuesType;
 using System;
+using System.Collections.Generic;
 
 namespace Dominio.Entidades
 {
@@ -7,9 +8,9 @@ namespace Dominio.Entidades
     {
         public Guid IdCurso { get; private set; }
         public double CargaHoraria { get; private set; }
-        public double Nota { get; private set; }
         public double NotaMinimaAprovacao { get; private set; }
         public Curso Curso { get; private set; }
+        public IEnumerable<AlunoDisciplina> AlunoDisciplina { get; private set; }
         public Disciplina(Guid id, string nome) : base(id, nome) {  }
         public Disciplina() {  }
 

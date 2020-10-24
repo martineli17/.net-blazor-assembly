@@ -1,0 +1,16 @@
+﻿namespace Service.Validators.MessagensValidator
+{
+    public static class MensagemValidator
+    {
+        public static string NaoMaiorOuIgual(string campo) => campo + " não pode ser maior ou igual a {ComparisonValue}. " +
+                                                            "Valor informado foi {PropertyValue}.";
+        public static string NaoMenorOuIgual(string campo) => campo + " não pode ser menor ou igual a {ComparisonValue}. " +
+                                                            "Valor informado foi {PropertyValue}.";
+        public static string NaoMaior(string campo) => campo + " não pode ser maior que {ComparisonValue}. " +
+                                                            "Valor informado foi {PropertyValue}.";
+        public static string NaoMenor(string campo) => campo + " não pode ser menor que {ComparisonValue}. " +
+                                                            "Valor informado foi {PropertyValue}.";
+        public static string NaoNuloOuVazio(string campo) => campo + " precisa ser informado.";
+        public static string ErroNoProcesso = "Ocorreu um erro interno ao realizar a operação.";
+    }
+}

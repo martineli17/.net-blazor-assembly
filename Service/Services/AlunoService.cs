@@ -1,14 +1,12 @@
-﻿using Crosscuting.Notificacao;
-using Dominio.Entidades;
+﻿using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
-using FluentValidation;
-using Service.Validators;
+using Service.Services.ServicesBase;
 
 namespace Service.Services
 {
     public class AlunoService : BaseService<Aluno>
     {
-        public AlunoService(IAlunoRepositorio repositorio, IValidacaoFluent validation) : base(repositorio, validation)
+        public AlunoService(IAlunoRepositorio repositorio, InjectorServiceBase injector) : base(repositorio, injector)
         {
 
         }
