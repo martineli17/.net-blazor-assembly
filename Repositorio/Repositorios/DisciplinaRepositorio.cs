@@ -17,7 +17,9 @@ namespace Repositorio.Repositorios
         public async override Task<IQueryable<Disciplina>> GetAsync(Func<Disciplina, bool> query = null)
         {
             await Task.Yield();
-            return Context.Disciplina.Include(x => x.Curso).Where(query).AsQueryable();
+            return query is null ?
+                  Context.Disciplina.Include(x => x.Curso).AsQueryable() :
+                  Context.Disciplina.Include(x => x.Curso).Where(query).AsQueryable();
         }
     }
 }
