@@ -11,6 +11,8 @@
         public static string NaoMenor(string campo) => campo + " não pode ser menor que {ComparisonValue}. " +
                                                             "Valor informado foi {PropertyValue}.";
         public static string NaoNuloOuVazio(string campo) => campo + " precisa ser informado.";
+        public static string TamanhoMaximo(string campo) => campo + " ter no máximo {MaxLength}.";
+
         public static string ErroNoProcesso = "Ocorreu um erro interno ao realizar a operação.";
         public static string IsEnum(string campo) => campo + " contém valor não identificado.";
     }
