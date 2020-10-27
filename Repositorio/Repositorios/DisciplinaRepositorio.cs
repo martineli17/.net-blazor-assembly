@@ -1,5 +1,6 @@
 ﻿using Crosscuting.Notificacao;
 using Dominio.Entidades;
+using Dominio.Interfaces.Repositorio;
 using Microsoft.EntityFrameworkCore;
 using Repositorio.Contexto;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repositorio.Repositorios
 {
-    public class DisciplinaRepositorio : BaseRepositorio<Disciplina>
+    public class DisciplinaRepositorio : BaseRepositorio<Disciplina>, IDisciplinaRepositorio
     {
         public DisciplinaRepositorio(Context context, INotificador notificador) : base(context, notificador)
         {
