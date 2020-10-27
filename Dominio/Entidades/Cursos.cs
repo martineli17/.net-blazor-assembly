@@ -11,6 +11,8 @@ namespace Dominio.Entidades
         public Guid IdDisciplina { get; private set; }
         public List<Aluno> Alunos { get; private set; }
         public List<Disciplina> Diciplinas { get; private set; }
+        public double CargaHoraria { get; private set;  }
+        public string AreaAtuacao { get; private set;  }
         public EnumTurno Turno { get; private set;  }
         public Curso(Guid id, string nome) : base(id, nome) { }   
         public Curso()

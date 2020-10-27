@@ -15,6 +15,8 @@ namespace Repositorio.Mapeamento
             builder.HasIndex(x => x.Nome);
             builder.Property(x => x.Id).HasColumnName("ID").HasColumnType("uniqueidentifier").IsRequired().HasMaxLength(100);
             builder.Property(x => x.Nome).HasColumnName("NOME").HasColumnType("varchar(60)").IsRequired().HasMaxLength(60).IsUnicode(false);
+            builder.Property(x => x.CargaHoraria).HasColumnName("CARGA_HORARIA").HasColumnType("number").IsRequired();
+            builder.Property(x => x.AreaAtuacao).HasColumnName("AREA_ATUACAO").HasColumnType("varchar(50)").IsRequired().HasMaxLength(50);
             builder.Property(x => x.Turno).HasColumnName("TURNO").HasColumnType("varchar(15)").IsRequired().HasMaxLength(15)
                 .HasConversion(value => value.ToString(), dataBase => (EnumTurno)Enum.Parse(typeof(EnumTurno), dataBase));
             builder.HasMany(curso => curso.Alunos).WithOne(aluno => aluno.Curso).HasForeignKey(x => x.IdCurso);
