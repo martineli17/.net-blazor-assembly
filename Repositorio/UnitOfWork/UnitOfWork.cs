@@ -19,17 +19,13 @@ namespace Repositorio.UnitOfWork
         {
             try
             {
-                using (var transacao = await _context.Database.BeginTransactionAsync())
-                {
-                    await _context.SaveChangesAsync();
-                    await transacao.CommitAsync();
-                    return true;
-                }
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 _notificador.Add("Ocorreu um erro ao processar a operação.", EnumTipoMensagem.Erro);
-                Console.WriteLine(ex);
                 return false;
             }
         }

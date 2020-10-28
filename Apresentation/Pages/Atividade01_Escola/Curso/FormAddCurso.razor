@@ -1,58 +1,52 @@
 ﻿@using Apresentation.ViewModels
-<EditForm Model="Curso">
+@inject Apresentation.Services.Validator.ValidatorService Service
+@inject Apresentation.Services.CursoServices.Servicos.AddCursoService AddCursoService
+@inject Blazored.Toast.Services.IToastService Toast;
+
+<form>
     <div class="row">
         <div class="col-md-4">
             <label for="nome-curso" class="">Nome</label>
-            <InputText @bind-Value="Curso.Nome" id="nome-curso" type="text" class="form-control" />
+            <input @bind="Curso.Nome" id="nome-curso" type="text" class="form-control" />
         </div>
         <div class="col-md-4">
             <label for="area-curso" class="">Área de atuação</label>
-            <InputText @bind-Value="Curso.AreaAtuacao" id="area-curso" type="text" class="form-control" />
+            <input @bind="Curso.AreaAtuacao" id="area-curso" type="text" class="form-control" />
         </div>
         <div class="col-md-4">
             <label for="carga-horaria-curso" class="">Carga horária</label>
-            <InputNumber @bind-Value="Curso.CargaHoraria" id="carga-horaria-curso" type="number" class="form-control" />
+            <input @bind="Curso.CargaHoraria" id="carga-horaria-curso" type="number" class="form-control" />
         </div>
 
     </div>
     <div class="row justify-content-center m-md-4">
         <div class="col-md-3">
-            <input @bind="Curso.Turno" id="turno-curso-matutino" name="Turno" type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.MATUTINO))"  id="turno-curso-matutino" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-matutino" class="form-check-label">Matutino</label>
         </div>
         <div class="col-md-3">
-            <input @bind="Curso.Turno" id="turno-curso-vespertino" name="Turno" type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.VESPERTINO))"  id="turno-curso-vespertino" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-vespertino" class="form-check-label">Vespertino</label>
         </div>
         <div class="col-md-3">
-            <input @bind="Curso.Turno" id="turno-curso-noturno" name="Turno" checked type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.NOTURNO))" 
+                    id="turno-curso-noturno" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-noturno" class="form-check-label">Noturno</label>
         </div>
     </div>
-</EditForm>
+</form>
 <hr />
 <div class="row justify-content-center m-md-4">
-    <button class="btn" style="border-color: #734f96; background-color: #734f96; color: white;">Cadastrar</button>
+    <button @onclick="HandleSubmit" class="btn" style="border-color: #734f96; background-color: #734f96; color: white;">
+        Cadastrar
+    </button>
 </div>
 <FetchData />
+
+
 @code {
-    protected CursoAddViewModel Curso { get; set; } = new CursoAddViewModel();
-    protected EditContext EditContext { get; set; }
 
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(Curso);
-    }
-
-    protected void HandleSubmit()
-    {
-        if (EditContext.Validate())
-        {
-
-        }
-        else
-        {
-
-        }
-    }
+    private CursoAddViewModel Curso { get; set; } = new CursoAddViewModel();
+    private void ChangeTurno(Dominio.ValuesType.EnumTurno turnoSelecionado) => Curso.Turno = turnoSelecionado;
+    private async Task HandleSubmit() => await Service.CallService(Curso, AddCursoService, Enums.EnumTipoSendService.Adicionar);
 }
