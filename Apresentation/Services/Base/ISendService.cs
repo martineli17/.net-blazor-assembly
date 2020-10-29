@@ -6,6 +6,6 @@ namespace Apresentation.Services.Base
 {
     public interface ISendService
     {
-        Task<bool> SendService(IBaseViewModel model);
+        Task<object> SendService(IBaseViewModel model = null);
     }
 }

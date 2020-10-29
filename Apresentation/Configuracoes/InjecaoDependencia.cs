@@ -1,12 +1,12 @@
 ﻿using Apresentation.Services.Base;
-using Apresentation.Services.CursoServices.Interface;
-using Apresentation.Services.CursoServices.Servicos;
+using Apresentation.Services.CursoServices;
 using Apresentation.Services.Validator;
 using Crosscuting.Notificacao;
 using Dominio.Interfaces.Repositorio;
 using Dominio.Interfaces.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Repositorio.Contexto;
 using Repositorio.Repositorios;
 using Repositorio.UnitOfWork;
 using Service.Services;
@@ -26,26 +26,29 @@ namespace Apresentation.Configuracoes
             #endregion
 
             #region Repositorios
-            service.TryAddScoped<IUnitOfWork, UnitOfWork>();
-            service.TryAddScoped<ICursoRepositorio, CursoRepositorio>();
-            service.TryAddScoped<IAlunoRepositorio, AlunoRepositorio>();
-            service.TryAddScoped<IDisciplinaRepositorio, DisciplinaRepositorio>();
-            service.TryAddScoped<IAlunoDisciplinaRepositorio, AlunoDisciplinaRepositorio>();
+            service.TryAddScoped<Context>();
+            service.TryAddTransient<IUnitOfWork, UnitOfWork>();
+            service.TryAddTransient<ICursoRepositorio, CursoRepositorio>();
+            service.TryAddTransient<IAlunoRepositorio, AlunoRepositorio>();
+            service.TryAddTransient<IDisciplinaRepositorio, DisciplinaRepositorio>();
+            service.TryAddTransient<IAlunoDisciplinaRepositorio, AlunoDisciplinaRepositorio>();
             #endregion
 
             #region Services
             service.TryAddScoped<InjectorServiceBase>();
-            service.TryAddScoped<IValidacaoFluent, ValidacaoFluent>();
-            service.TryAddScoped<ICursoService, CursoService>();
-            service.TryAddScoped<IAlunoService, AlunoService>();
-            service.TryAddScoped<IDisciplinaService, DisciplinaService>();
-            service.TryAddScoped<IAlunoDisciplinaService, AlunoDisciplinaService>();
+            service.TryAddTransient<IValidacaoFluent, ValidacaoFluent>();
+            service.TryAddTransient<ICursoService, CursoService>();
+            service.TryAddTransient<IAlunoService, AlunoService>();
+            service.TryAddTransient<IDisciplinaService, DisciplinaService>();
+            service.TryAddTransient<IAlunoDisciplinaService, AlunoDisciplinaService>();
             #endregion
 
             #region Services front
             service.TryAddScoped<InjectorServiceBaseApresentation>();
-            service.TryAddScoped<AddCursoService>();
-            service.TryAddScoped<ValidatorService>();
+            service.TryAddTransient<AddCursoService>();
+            service.TryAddTransient<GetCursoService>();
+            service.TryAddTransient<ValidatorService>();
+            service.TryAddTransient<RemoveCursoService>();
             #endregion
 
             return service;

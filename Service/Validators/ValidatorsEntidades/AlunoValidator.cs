@@ -10,9 +10,11 @@ namespace Service.Validators.ValidatorsEntidades
         public AlunoValidator()
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage(MensagemValidator.ErroNoProcesso);
-            RuleFor(x => x.Nome).NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("Nome"))
+            RuleFor(x => x.Nome).NotEmpty().WithMessage(MensagemValidator.NaoNuloOuVazio("Nome"))
+                .NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("Nome"))
                 .MaximumLength(60).WithMessage(MensagemValidator.TamanhoMaximo("Nome"));
-            RuleFor(x => x.Cpf).NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("CPF"))
+            RuleFor(x => x.Cpf).NotEmpty().WithMessage(MensagemValidator.NaoNuloOuVazio("CPF"))
+                .NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("CPF"))
                 .Must(ValidadorCpf.ValidarCpf).WithMessage("CPF informado está inválido.");
             RuleFor(x => x.IdCurso).NotNull().WithMessage(MensagemValidator.NaoNuloOuVazio("Curso"));
             RuleFor(x => x.DataNascimento).NotEmpty().WithMessage(MensagemValidator.NaoNuloOuVazio("Data de nascimento"))

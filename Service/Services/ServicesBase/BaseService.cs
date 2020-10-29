@@ -22,7 +22,10 @@ namespace Service.Services.ServicesBase
         public async Task<TEntidade> AddAsync(TEntidade entidade, AbstractValidator<TEntidade> validation)
         {
             if (Injector.Validator.Executar(validation, entidade))
+            {
                 await Repositorio.AddAsync(entidade);
+                await Injector.UnitOfWork.CommitAsync();
+            }
             return entidade;
         }
 
@@ -32,18 +35,22 @@ namespace Service.Services.ServicesBase
 
         public async Task<bool> RemoveAsync(Guid id)
         {
-            if (await ValidarExistenciaEntidade(id))
+            if (!await ValidarExistenciaEntidade(id))
                 return false;
             await Repositorio.RemoveAsync(id);
+            await Injector.UnitOfWork.CommitAsync();
             return true;
         }
 
         public async Task<TEntidade> UpdateAsync(TEntidade entidade, AbstractValidator<TEntidade> validation)
         {
-            if (await ValidarExistenciaEntidade(entidade.Id))
+            if (!await ValidarExistenciaEntidade(entidade.Id))
                 return entidade;
             if (Injector.Validator.Executar(validation, entidade))
+            {
                 await Repositorio.UpdateAsync(entidade);
+                await Injector.UnitOfWork.CommitAsync();
+            }
             return entidade;
         }
 

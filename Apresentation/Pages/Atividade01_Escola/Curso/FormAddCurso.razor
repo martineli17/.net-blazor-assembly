@@ -1,7 +1,5 @@
-﻿@using Apresentation.ViewModels
-@inject Apresentation.Services.Validator.ValidatorService Service
-@inject Apresentation.Services.CursoServices.Servicos.AddCursoService AddCursoService
-@inject Blazored.Toast.Services.IToastService Toast;
+﻿@using Apresentation.ViewModels.CursoViewModel
+@inject Apresentation.Services.CursoServices.AddCursoService AddCursoService
 
 <form>
     <div class="row">
@@ -21,32 +19,37 @@
     </div>
     <div class="row justify-content-center m-md-4">
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.MATUTINO))"  id="turno-curso-matutino" name="Turno" type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.MATUTINO))" id="turno-curso-matutino" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-matutino" class="form-check-label">Matutino</label>
         </div>
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.VESPERTINO))"  id="turno-curso-vespertino" name="Turno" type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.VESPERTINO))" id="turno-curso-vespertino" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-vespertino" class="form-check-label">Vespertino</label>
         </div>
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.NOTURNO))" 
-                    id="turno-curso-noturno" name="Turno" type="radio" class="form-check-inline" />
+            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.NOTURNO))"
+                   id="turno-curso-noturno" name="Turno" type="radio" class="form-check-inline" />
             <label for="turno-curso-noturno" class="form-check-label">Noturno</label>
         </div>
     </div>
 </form>
 <hr />
 <div class="row justify-content-center m-md-4">
-    <button @onclick="HandleSubmit" class="btn" style="border-color: #734f96; background-color: #734f96; color: white;">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
         Cadastrar
     </button>
 </div>
-<FetchData />
 
+<ListCurso Atualizar="AtualizarListagem" />
 
 @code {
 
+    private bool AtualizarListagem;
     private CursoAddViewModel Curso { get; set; } = new CursoAddViewModel();
     private void ChangeTurno(Dominio.ValuesType.EnumTurno turnoSelecionado) => Curso.Turno = turnoSelecionado;
-    private async Task HandleSubmit() => await Service.CallService(Curso, AddCursoService, Enums.EnumTipoSendService.Adicionar);
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(AddCursoService, Enums.EnumTipoSendService.Adicionar, Curso))
+            AtualizarListagem = !AtualizarListagem;
+    }
 }

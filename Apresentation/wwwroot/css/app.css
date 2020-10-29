@@ -1,11 +1,38 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.blazored-toast-heading {
+    font-size: 13px;
+}
+
+.toast-message {
+    font-size: 12px!important;
+}
+
+.oi {
+    cursor: pointer;
+}
+
+.oi-loop-circular{
+    color: orange;
+}
+
+.oi-trash{
+    color: red;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
 }
 
 a, .btn-link {
     color: #0366d6;
+}
+
+.btn-purple {
+    border-color: #734f96;
+    background-color: #734f96;
+    color: white;
 }
 
 .btn-primary {

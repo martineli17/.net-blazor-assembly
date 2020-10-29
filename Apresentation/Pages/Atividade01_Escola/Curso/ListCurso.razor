@@ -1,5 +1,57 @@
-﻿<h3>ListCurso</h3>
+﻿@using Apresentation.ViewModels.CursoViewModel
+@inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
+@inject Apresentation.Services.CursoServices.RemoveCursoService RemoveCursoService
+
+@if (Cursos != null && Cursos.Any())
+{
+    <table class="table table-hover table-responsive-md table-borderless">
+        <thead class="thead-light">
+            <tr>
+                <th>Nome</th>
+                <th>Área de atuação</th>
+                <th>Turno</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var curso in Cursos)
+            {
+                <tr>
+                    <td>@curso.Nome?.ToUpper()</td>
+                    <td>@curso.AreaAtuacao?.ToUpper()</td>
+                    <td>@curso.Turno?.ToUpper()</td>
+                    <td><span title="Atualizar" class="oi oi-loop-circular oi-align-center"></span></td>
+                    <td><span @onclick="(() => DeleteAsync(curso.Id))" title="Remover" class="oi oi-trash text-center oi-align-center"></span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    [Parameter]
+    public bool Atualizar { get; set; }
+    [CascadingParameter] ModalParameters ModalParameters { get; set; }
+    private IEnumerable<CursoGetViewModel> Cursos = null;
+    private CursoFiltroViewModel Filtro = new CursoFiltroViewModel();
 
+    protected override async Task OnInitializedAsync() =>
+        Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                  .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    protected override async Task OnParametersSetAsync() =>
+        Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                 .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task DeleteAsync(Guid id)
+    {
+        if ((bool)await Service.CallService(RemoveCursoService, Enums.EnumTipoSendService.Excluir,
+                                new CursoRemoveViewModel { Id = id }))
+        {
+            Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                     .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+            StateHasChanged();
+        }
+    }
 }

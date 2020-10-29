@@ -10,13 +10,17 @@
         @Body
     </div>
 </div>
-<BlazoredToasts/>
-@*<Blazored.Toast.BlazoredToasts Position="ToastPosition.TopRight" 
+ 
+<BlazoredToasts Position="ToastPosition.TopRight" 
                                Timeout="5"
+                               SuccessClass="toast-message"
+                               ErrorClass="toast-message"
+                               InfoClass="toast-message"
+                               WarningClass="toast-message"
                                IconType="Blazored.Toast.IconType.FontAwesome"
-                               SuccessClass="success-toast-override"
-                               SuccessIcon="fa fa-thumbs-up"
-                               ErrorClass="error-toast-override"
-                               ErrorIcon="fa fa-bug"
+                               SuccessIcon="oi oi-check"
+                               ErrorIcon="oi oi-x"
+                               WarningIcon="oi oi-warning"
+                               InfoIcon="oi oi-info"
                                ShowProgressBar="true"
-                               />*@
+                               />

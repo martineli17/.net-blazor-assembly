@@ -1,4 +1,5 @@
 using Apresentation.Configuracoes;
+using Blazored.Modal;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace Apresentation
             builder.Services.AddDataBaseInMemory();
             builder.Services.AddMapper();
             builder.Services.AddBlazoredToast();
+            builder.Services.AddBlazoredModal();
 
             await builder.Build().RunAsync();
         }

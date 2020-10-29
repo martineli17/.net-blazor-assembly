@@ -20,21 +20,33 @@ namespace Apresentation.Services.Validator
         }
 
 
-        public async Task CallService(IBaseViewModel model, ISendService service, EnumTipoSendService tipoService)
+        public async Task<object> CallService(ISendService service,EnumTipoSendService tipoService, IBaseViewModel model = null)
         {
-            await service.SendService(model);
+            var result = await service.SendService(model);
             OperacaoValida(tipoService);
+            return result;
         }
 
         public bool OperacaoValida(EnumTipoSendService tipoService)
         {
             AddNotificaoPeloTipoServico(tipoService);
-            var mensagens = _notificador.Value.Mensagens();
-            _toastService.ShowWarning(string.Join(" ", mensagens.Select(x => x.Mensagem)),
-                mensagens.FirstOrDefault().Tipo == EnumTipoMensagem.Erro ? "Ocorreu um erro!" :
-                mensagens.FirstOrDefault().Tipo == EnumTipoMensagem.Sucesso ? "Sucesso!": "Atenção!");
+            if(_notificador.Value.ContemMensagens())
+            {
+                var mensagem = _notificador.Value.Mensagens().FirstOrDefault();
+                switch (mensagem.Tipo)
+                {
+                    case EnumTipoMensagem.Erro:
+                        _toastService.ShowError(mensagem?.Mensagem, "Ocorreu um erro!"); break;
+                    case EnumTipoMensagem.Warning:
+                        _toastService.ShowWarning(mensagem?.Mensagem, "Atenção!"); break;
+                    case EnumTipoMensagem.Sucesso:
+                        _toastService.ShowSuccess(mensagem?.Mensagem, "Sucesso!"); break;
+                    default:
+                        break;
+                }
+            }
             _notificador.Value.Limpar();
-            return false;
+            return _notificador.Value.IsValido();
         }
 
         private void AddNotificaoPeloTipoServico(EnumTipoSendService tipoService)
@@ -54,13 +66,5 @@ namespace Apresentation.Services.Validator
                 }
             }
         }
-
-
-        //public bool ValidarDadosFormulario(bool isValid, IEnumerable<string> erros = null)
-        //{
-        //    if (isValid) return true;
-        //    _toastService.ShowWarning(string.Join(". ", erros), "Atenção");
-        //    return isValid;
-        //}
     }
 }

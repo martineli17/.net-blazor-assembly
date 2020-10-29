@@ -21,6 +21,8 @@ namespace Crosscuting.Notificacao
 
         public bool ContemMensagens() => _mensagens.Any();
 
+        public bool IsValido() => !_mensagens.Any(x => x.Tipo == EnumTipoMensagem.Warning || x.Tipo == EnumTipoMensagem.Erro);
+
         public void Limpar() => _mensagens.Clear();
 
         IEnumerable<MensagemNotificacao> INotificador.Mensagens() => _mensagens;
@@ -32,6 +34,7 @@ namespace Crosscuting.Notificacao
         void AddRange(IEnumerable<string> mensagens, EnumTipoMensagem tipo = EnumTipoMensagem.Warning);
         void Limpar();
         bool ContemMensagens();
+        bool IsValido();
         IEnumerable<MensagemNotificacao> Mensagens();
     }
 }

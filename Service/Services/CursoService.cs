@@ -24,12 +24,17 @@ namespace Service.Services
                 return entidade;
             }
             await base.AddAsync(entidade, new CursoValidator());
-            await Injector.UnitOfWork.CommitAsync();
             return entidade;
         }
 
         public async Task<Curso> UpdateAsync(Curso entidade)
         {
+            if ((await Repositorio.GetAsync(x => x.Id != entidade.Id && 
+                 x.Nome.ToLower() == entidade.Nome.ToLower())).HasValue())
+            {
+                Injector.Notificador.Add("Já contém um curso cadastrado com o nome solicitado!");
+                return entidade;
+            }
             await base.UpdateAsync(entidade, new CursoValidator());
             return entidade;
         }

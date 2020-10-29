@@ -1,4 +1,4 @@
-﻿using Apresentation.ViewModels;
+﻿using Apresentation.ViewModels.CursoViewModel;
 using AutoMapper;
 using Dominio.Entidades;
 
@@ -9,6 +9,8 @@ namespace Apresentation.Mapper
         public CursoMapper()
         {
             CreateMap<CursoAddViewModel, Curso>();
+            CreateMap<Curso, CursoGetViewModel>()
+                .ForMember(dest => dest.Turno, options => options.MapFrom(src => src.Turno.ToString()));
         }
     }
 }
