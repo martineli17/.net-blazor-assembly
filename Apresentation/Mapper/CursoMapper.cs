@@ -9,8 +9,9 @@ namespace Apresentation.Mapper
         public CursoMapper()
         {
             CreateMap<CursoAddViewModel, Curso>();
+            CreateMap<CursoGetViewModel, Curso>();
             CreateMap<Curso, CursoGetViewModel>()
-                .ForMember(dest => dest.Turno, options => options.MapFrom(src => src.Turno.ToString()));
+                .ForMember(dest => dest.NameTurno, options => options.MapFrom(src => src.Turno.ToString()));
         }
     }
 }

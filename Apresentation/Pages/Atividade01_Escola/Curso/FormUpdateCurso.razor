@@ -1,56 +1,70 @@
-﻿@*@using Apresentation.ViewModels.CursoViewModel
-@inject Apresentation.Services.CursoServices.AddCursoService AddCursoService
+﻿@using Apresentation.ViewModels.CursoViewModel
+@using Dominio.ValuesType
+@inject Apresentation.Services.CursoServices.UpdateCursoService UpdateCursoService
 
 <form>
+    <input @bind="Curso.Id" type="hidden" />
     <div class="row">
         <div class="col-md-4">
             <label for="nome-curso" class="">Nome</label>
-            <input @bind="Curso.Nome" id="nome-curso" type="text" class="form-control" />
+            <input @bind="Curso.Nome" type="text" class="form-control" />
         </div>
         <div class="col-md-4">
             <label for="area-curso" class="">Área de atuação</label>
-            <input @bind="Curso.AreaAtuacao" id="area-curso" type="text" class="form-control" />
+            <input @bind="Curso.AreaAtuacao" type="text" class="form-control" />
         </div>
         <div class="col-md-4">
             <label for="carga-horaria-curso" class="">Carga horária</label>
-            <input @bind="Curso.CargaHoraria" id="carga-horaria-curso" type="number" class="form-control" />
+            <input @bind="Curso.CargaHoraria" type="number" class="form-control" />
         </div>
-
     </div>
     <div class="row justify-content-center m-md-4">
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.MATUTINO))" id="turno-curso-matutino" name="Turno" type="radio" class="form-check-inline" />
-            <label for="turno-curso-matutino" class="form-check-label">Matutino</label>
+            <input checked="@TurnoChecked(EnumTurno.MATUTINO)" @onchange="(() => ChangeTurno(EnumTurno.MATUTINO))"
+                   id="turno-curso-matutino-update" name="Turno" type="radio" class="form-check-inline" />
+            <label for="turno-curso-matutino-update" class="form-check-label">Matutino</label>
         </div>
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.VESPERTINO))" id="turno-curso-vespertino" name="Turno" type="radio" class="form-check-inline" />
-            <label for="turno-curso-vespertino" class="form-check-label">Vespertino</label>
+            <input checked="@TurnoChecked(EnumTurno.VESPERTINO)" @onchange="(() => ChangeTurno(EnumTurno.VESPERTINO))"
+                   id="turno-curso-vespertino-update" name="Turno" type="radio" class="form-check-inline" />
+            <label for="turno-curso-vespertino-update" class="form-check-label">Vespertino</label>
         </div>
         <div class="col-md-3">
-            <input @onchange="(() => ChangeTurno(Dominio.ValuesType.EnumTurno.NOTURNO))"
-                   id="turno-curso-noturno" name="Turno" type="radio" class="form-check-inline" />
-            <label for="turno-curso-noturno" class="form-check-label">Noturno</label>
+            <input checked="@TurnoChecked(EnumTurno.NOTURNO)" @onchange="(() => ChangeTurno(EnumTurno.NOTURNO))"
+                   id="turno-curso-noturno-update" name="Turno" type="radio" class="form-check-inline" />
+            <label for="turno-curso-noturno-update" class="form-check-label">Noturno</label>
         </div>
     </div>
 </form>
 <hr />
 <div class="row justify-content-center m-md-4">
-    <button @onclick="HandleSubmit" class="btn btn-purple">
-        Cadastrar
-    </button>
+    <div class="col-md-1">
+        <button @onclick="CancelSubmit" class="btn btn-purple">
+            Cancelar
+        </button>
+    </div>
+    <div class="col-md-1">
+        <button @onclick="HandleSubmit" class="btn btn-purple">
+            Atualizar
+        </button>
+    </div>
 </div>
 
-<ListCurso Atualizar="AtualizarListagem" />
-
 @code {
+    [Parameter] public CursoGetViewModel Curso { get; set; }
+    [Parameter] public Action OnRefreshList { get; set; }
+    [Parameter] public Action OnCancel { get; set; }
 
-    [Parameter]
-    public CursoUpdateViewModel Curso { get; set; }
     private void ChangeTurno(Dominio.ValuesType.EnumTurno turnoSelecionado) => Curso.Turno = turnoSelecionado;
+
     private async Task HandleSubmit()
     {
-        if ((bool)await Service.CallService(AddCursoService, Enums.EnumTipoSendService.Adicionar, Curso))
-            AtualizarListagem = !AtualizarListagem;
+        if ((bool)await Service.CallService(UpdateCursoService, Enums.EnumTipoSendService.Atualizar, Curso))
+            OnRefreshList.Invoke();
     }
-}*@
+
+    private string TurnoChecked(EnumTurno turno) => (turno == Curso.Turno) ? "checked" : null;
+
+    private void CancelSubmit() => OnCancel.Invoke();
+}
 

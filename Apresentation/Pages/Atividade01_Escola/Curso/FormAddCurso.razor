@@ -40,16 +40,15 @@
     </button>
 </div>
 
-<ListCurso Atualizar="AtualizarListagem" />
-
 @code {
-
-    private bool AtualizarListagem;
+    [Parameter] public Action OnRefreshList { get; set; }
     private CursoAddViewModel Curso { get; set; } = new CursoAddViewModel();
+
     private void ChangeTurno(Dominio.ValuesType.EnumTurno turnoSelecionado) => Curso.Turno = turnoSelecionado;
+
     private async Task HandleSubmit()
     {
         if ((bool)await Service.CallService(AddCursoService, Enums.EnumTipoSendService.Adicionar, Curso))
-            AtualizarListagem = !AtualizarListagem;
+            OnRefreshList.Invoke();
     }
 }

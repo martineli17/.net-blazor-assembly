@@ -45,10 +45,11 @@ namespace Apresentation.Configuracoes
 
             #region Services front
             service.TryAddScoped<InjectorServiceBaseApresentation>();
+            service.TryAddTransient<ValidatorService>();
             service.TryAddTransient<AddCursoService>();
             service.TryAddTransient<GetCursoService>();
-            service.TryAddTransient<ValidatorService>();
             service.TryAddTransient<RemoveCursoService>();
+            service.TryAddTransient<UpdateCursoService>();
             #endregion
 
             return service;

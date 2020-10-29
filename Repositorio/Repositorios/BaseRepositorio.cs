@@ -1,6 +1,7 @@
 ﻿using Crosscuting.Notificacao;
 using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
+using Microsoft.EntityFrameworkCore;
 using Repositorio.Contexto;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,15 @@ namespace Repositorio.Repositorios
             Notificador = notificador;
         }
 
-        public virtual async Task AddAsync(TEntity entidade) => await Context.Set<TEntity>().AddAsync(entidade);
+        public virtual async Task AddAsync(TEntity entidade) 
+        {
+            await Context.Set<TEntity>().AddAsync(entidade);
+        }
 
-        public virtual async Task AddAsync(IEnumerable<TEntity> entidades) => await Context.Set<TEntity>().AddRangeAsync(entidades);
+        public virtual async Task AddAsync(IEnumerable<TEntity> entidades) 
+        {
+            await Context.Set<TEntity>().AddRangeAsync(entidades);
+        }
 
         public virtual async Task<IQueryable<TEntity>> GetAsync(Func<TEntity, bool> query = null)
         {
@@ -30,7 +37,12 @@ namespace Repositorio.Repositorios
             return Context.Set<TEntity>().Where(query).AsQueryable();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(Guid id) => await Context.Set<TEntity>().FindAsync(id);
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
+        {
+            var entidade = await Context.Set<TEntity>().FindAsync(id);
+            Context.Entry(entidade).State = EntityState.Detached;
+            return entidade;
+        }
 
         public virtual async Task RemoveAsync(Guid id)
         {
@@ -46,7 +58,8 @@ namespace Repositorio.Repositorios
         public virtual async Task RemoveAsync(IEnumerable<Guid> id)
         {
             await Task.Yield();
-            Context.Set<TEntity>().RemoveRange(Context.Set<TEntity>().Where(x => id.Contains(x.Id)));
+            var entidades = Context.Set<TEntity>().Where(x => id.Contains(x.Id));
+            Context.Set<TEntity>().RemoveRange(entidades);
         }
 
         public virtual async Task UpdateAsync(TEntity entidade)

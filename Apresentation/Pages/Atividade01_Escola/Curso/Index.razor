@@ -1,12 +1,54 @@
 ﻿@page "/escola/curso"
+@using Apresentation.ViewModels.CursoViewModel
+
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="escola">Escola</a></li>
-    <li class="breadcrumb-item"><a>Curso</a></li>
-  </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="escola">Escola</a></li>
+        <li class="breadcrumb-item"><a>Curso</a></li>
+    </ol>
 </nav>
-<FormAddCurso />
+
+<div hidden="@HiddenFormularioAdicionar">
+    <FormAddCurso OnRefreshList="RefreshListagem" />
+</div>
+@if (CursoAtualizar != null)
+{
+    <div hidden="@HiddenFormularioAtualizar">
+        <FormUpdateCurso  OnCancel="CallFormularioAdicionar" Curso="CursoAtualizar" OnRefreshList="RefreshListagem"/>
+    </div>
+}
+<div>
+    <ListCurso CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
+</div>
+
 
 @code {
+    private bool AtualizarListagem;
+    private string HiddenFormularioAdicionar = null;
+    private string HiddenFormularioAtualizar = "hidden";
+    private CursoGetViewModel CursoAtualizar = null;
 
+    private void RefreshListagem()
+    {
+        AtualizarListagem = !AtualizarListagem;
+        StateHasChanged();
+    }
+
+    private void CallFormularioAdicionar()
+    {
+        //Values.ShowFormularioAdicionar = !Values.ShowFormularioAdicionar;
+        //Values.ShowFormularioAtualizar = false;
+        CursoAtualizar = null;
+        HiddenFormularioAdicionar = null;
+        HiddenFormularioAtualizar = "hidden";
+        StateHasChanged();
+    }
+
+    private void CallFormularioAtualizar(CursoGetViewModel curso)
+    {
+        CursoAtualizar = curso;
+        HiddenFormularioAtualizar = null;
+        HiddenFormularioAdicionar = "hidden";
+        StateHasChanged();
+    }
 }

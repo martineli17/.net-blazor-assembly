@@ -1,4 +1,5 @@
 ﻿@using Apresentation.ViewModels.CursoViewModel
+@using Crosscuting.Extensions
 @inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
 @inject Apresentation.Services.CursoServices.RemoveCursoService RemoveCursoService
 
@@ -18,11 +19,17 @@
             @foreach (var curso in Cursos)
             {
                 <tr>
-                    <td>@curso.Nome?.ToUpper()</td>
-                    <td>@curso.AreaAtuacao?.ToUpper()</td>
-                    <td>@curso.Turno?.ToUpper()</td>
-                    <td><span title="Atualizar" class="oi oi-loop-circular oi-align-center"></span></td>
-                    <td><span @onclick="(() => DeleteAsync(curso.Id))" title="Remover" class="oi oi-trash text-center oi-align-center"></span></td>
+                    <td title="@curso.Nome?.ToUpper()" >@curso.Nome?.ToUpper()?.TrySubstring(20)</td>
+                    <td title="@curso.AreaAtuacao?.ToUpper()">@curso.AreaAtuacao?.ToUpper().TrySubstring(20)</td>
+                    <td>@curso.NameTurno?.ToUpper()</td>
+                    <td>
+                        <span @onclick="(() => GetFormUpdate(curso))" title="Atualizar" 
+                              class="oi oi-loop-circular oi-align-center"></span>
+                    </td>
+                    <td>
+                        <span @onclick="(() => DeleteAsync(curso.Id))" title="Remover" 
+                              class="oi oi-trash text-center oi-align-center"></span>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -30,9 +37,8 @@
 }
 
 @code {
-    [Parameter]
-    public bool Atualizar { get; set; }
-    [CascadingParameter] ModalParameters ModalParameters { get; set; }
+    [Parameter] public bool Atualizar { get; set; }
+    [Parameter] public Action<CursoGetViewModel> CallFormUpdate { get; set; }
     private IEnumerable<CursoGetViewModel> Cursos = null;
     private CursoFiltroViewModel Filtro = new CursoFiltroViewModel();
 
@@ -54,4 +60,6 @@
             StateHasChanged();
         }
     }
+
+    private void GetFormUpdate(CursoGetViewModel curso) => CallFormUpdate.Invoke(curso);
 }

@@ -6,7 +6,8 @@ namespace Apresentation.ViewModels.CursoViewModel
     {
         public string AreaAtuacao { get; set; }
         public double CargaHoraria { get; set; }
-        public string Turno { get; set; }
+        public string NameTurno { get; set; }
+        public EnumTurno Turno { get; set; }
     }
 
     public class CursoFiltroViewModel : BaseViewModel
