@@ -22,10 +22,10 @@
                 <tr>
                     <td title="@aluno.Nome?.ToUpper()">@aluno.Nome?.ToUpper()?.TrySubstring(20)</td>
                     <td>@aluno.Cpf</td>
-                    <td>@aluno.DataNascimento</td>
+                    <td>@aluno.DataNascimento.ToString("dd/MM/yyyy")</td>
                     <td  title="@aluno.Curso.Nome?.ToUpper()">@aluno.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
                     <td>
-                        <span title="Atualizar"
+                        <span title="Atualizar" @onclick="(() => GetFormUpdate(aluno))"
                               class="oi oi-loop-circular oi-align-center"></span>
                     </td>
                     <td>
@@ -62,5 +62,5 @@
         }
     }
 
-    //private void GetFormUpdate(CursoGetViewModel curso) => CallFormUpdate.Invoke(curso);
+    private void GetFormUpdate(AlunoGetViewModel aluno) => CallFormUpdate.Invoke(aluno);
 }

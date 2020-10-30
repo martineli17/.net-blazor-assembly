@@ -11,6 +11,7 @@
                 <th>Nome</th>
                 <th>Área de atuação</th>
                 <th>Turno</th>
+                <th>Carga horária</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -22,6 +23,7 @@
                     <td title="@curso.Nome?.ToUpper()" >@curso.Nome?.ToUpper()?.TrySubstring(20)</td>
                     <td title="@curso.AreaAtuacao?.ToUpper()">@curso.AreaAtuacao?.ToUpper().TrySubstring(20)</td>
                     <td>@curso.NameTurno?.ToUpper()</td>
+                    <td>@curso.CargaHoraria</td>
                     <td>
                         <span @onclick="(() => GetFormUpdate(curso))" title="Atualizar" 
                               class="oi oi-loop-circular oi-align-center"></span>

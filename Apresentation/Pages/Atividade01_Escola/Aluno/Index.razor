@@ -1,5 +1,5 @@
 ﻿@page "/escola/aluno"
-@using Apresentation.ViewModels.CursoViewModel
+@using Apresentation.ViewModels.AlunoViewModel
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -11,14 +11,14 @@
 <div hidden="@HiddenFormularioAdicionar">
     <FormAddAluno OnRefreshList="RefreshListagem" />
 </div>
-@if (CursoAtualizar != null)
+@if (AlunoAtualizar != null)
 {
     <div hidden="@HiddenFormularioAtualizar">
-        @*<FormUpdateAluno OnCancel="CallFormularioAdicionar" Curso="CursoAtualizar" OnRefreshList="RefreshListagem" />*@
+        <FormUpdateAluno OnCancel="CallFormularioAdicionar" Aluno="AlunoAtualizar" OnRefreshList="RefreshListagem" />
     </div>
 }
 <div>
-    <ListAlunos Atualizar="AtualizarListagem" />
+    <ListAlunos CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
 </div>
 
 
@@ -26,7 +26,7 @@
     private bool AtualizarListagem;
     private string HiddenFormularioAdicionar = null;
     private string HiddenFormularioAtualizar = "hidden";
-    private CursoGetViewModel CursoAtualizar = null;
+    private AlunoGetViewModel AlunoAtualizar = null;
 
     private void RefreshListagem()
     {
@@ -36,15 +36,15 @@
 
     private void CallFormularioAdicionar()
     {
-        CursoAtualizar = null;
+        AlunoAtualizar = null;
         HiddenFormularioAdicionar = null;
         HiddenFormularioAtualizar = "hidden";
         StateHasChanged();
     }
 
-    private void CallFormularioAtualizar(CursoGetViewModel curso)
+    private void CallFormularioAtualizar(AlunoGetViewModel aluno)
     {
-        CursoAtualizar = curso;
+        AlunoAtualizar = aluno;
         HiddenFormularioAtualizar = null;
         HiddenFormularioAdicionar = "hidden";
         StateHasChanged();

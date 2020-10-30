@@ -1,22 +1,24 @@
 ﻿using Apresentation.Services.Base;
 using Apresentation.ViewModels;
 using Apresentation.ViewModels.AlunoViewModel;
+using Dominio.Entidades;
 using Dominio.Interfaces.Service;
-using System;
 using System.Threading.Tasks;
 
 namespace Apresentation.Services.AlunoServices
 {
-    public class RemoveAlunoService : AlunoServiceBase, ISendService
+    public class UpdateAlunoService : AlunoServiceBase, ISendService
     {
-        public RemoveAlunoService(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
+        public UpdateAlunoService(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
             : base(alunoService, injector)
         {
         }
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            await AlunoService.RemoveAsync(model == null ? Guid.Empty : ((AlunoRemoveViewModel)model).Id);
+            if (ValidarId(((AlunoGetViewModel)model).Curso.Id, "Necessário selecionar um curso"))
+                return false;
+            await AlunoService.UpdateAsync(Injector.Mapper.Map<Aluno>(model));
             return Injector.Notificador.IsValido();
         }
     }

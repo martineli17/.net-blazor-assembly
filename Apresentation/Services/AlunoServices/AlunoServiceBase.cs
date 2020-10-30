@@ -1,12 +1,13 @@
 ﻿using Apresentation.Services.Base;
 using Dominio.Interfaces.Service;
+using System;
 
 namespace Apresentation.Services.AlunoServices
 {
-    public class BaseServiceAluno : ServiceBase
+    public class AlunoServiceBase : ServiceBase
     {
         protected readonly IAlunoService AlunoService;
-        public BaseServiceAluno(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
+        public AlunoServiceBase(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
             : base(injector)
         {
             AlunoService = alunoService;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Apresentation.Services.AlunoServices
 {
-    public class GetAlunoService : BaseServiceAluno, ISendService
+    public class GetAlunoService : AlunoServiceBase, ISendService
     {
         public GetAlunoService(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
             : base(alunoService, injector)

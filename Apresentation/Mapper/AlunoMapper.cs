@@ -9,9 +9,9 @@ namespace Apresentation.Mapper
         public AlunoMapper()
         {
             CreateMap<AlunoAddViewModel, Aluno>();
-            CreateMap<Aluno, AlunoGetViewModel>()
-                .ForMember(dest => dest.DataNascimento, 
-                options => options.MapFrom(src => src.DataNascimento.ToString("dd/MM/yyyy")));
+            CreateMap<Aluno, AlunoGetViewModel>();
+            CreateMap<AlunoGetViewModel, Aluno>()
+                .ForMember(dest => dest.IdCurso, options => options.MapFrom(src => src.Curso.Id));
         }
     }
 }

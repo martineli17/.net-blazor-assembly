@@ -28,7 +28,7 @@ namespace Service.Services
 
         public async Task<Aluno> UpdateAsync(Aluno entidade)
         {
-            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarAlunoDuplicado(entidade))
+            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarAlunoDuplicado(entidade, true))
                 return entidade;
             await base.UpdateAsync(entidade, new AlunoValidator());
             return entidade;
@@ -45,10 +45,11 @@ namespace Service.Services
             return true;
         }
 
-        private async Task<bool> ValidarAlunoDuplicado(Aluno entidade)
+        private async Task<bool> ValidarAlunoDuplicado(Aluno entidade, bool update = false)
         {
             if (entidade == null || 
-                (await Repositorio.GetAsync(x => x.Cpf == entidade.Cpf && x.IdCurso == entidade.IdCurso)).HasValue())
+                (await Repositorio.GetAsync(x => (!update || x.Id != entidade.Id) 
+                && x.Cpf == entidade.Cpf && x.IdCurso == entidade.IdCurso)).HasValue())
             {
                 Injector.Notificador.Add("Aluno já registrado no curso informado.");
                 return false;

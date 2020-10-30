@@ -3,12 +3,11 @@ using Apresentation.ViewModels;
 using Apresentation.ViewModels.AlunoViewModel;
 using Dominio.Entidades;
 using Dominio.Interfaces.Service;
-using System;
 using System.Threading.Tasks;
 
 namespace Apresentation.Services.AlunoServices
 {
-    public class AddAlunoService : BaseServiceAluno, ISendService
+    public class AddAlunoService : AlunoServiceBase, ISendService
     {
         public AddAlunoService(IAlunoService alunoService, InjectorServiceBaseApresentation injector)
             : base(alunoService, injector)
@@ -17,11 +16,8 @@ namespace Apresentation.Services.AlunoServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            if (((AlunoAddViewModel)model)?.IdCurso == Guid.Empty)
-            {
-                Injector.Notificador.Add("Necessário selecionar um curso");
+            if (ValidarId(((AlunoAddViewModel)model).IdCurso, "Necessário selecionar um curso"))
                 return false;
-            }
             await AlunoService.AddAsync(Injector.Mapper.Map<Aluno>(model));
             return Injector.Notificador.IsValido();
         }

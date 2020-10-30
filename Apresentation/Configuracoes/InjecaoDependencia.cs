@@ -59,6 +59,7 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<AddAlunoService>();
             service.TryAddTransient<GetAlunoService>();
             service.TryAddTransient<RemoveAlunoService>();
+            service.TryAddTransient<UpdateAlunoService>();
             #endregion
 
             #endregion
