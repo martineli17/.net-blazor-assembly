@@ -1,5 +1,66 @@
-﻿<h3>ListAlunos</h3>
+﻿@using Apresentation.ViewModels.AlunoViewModel
+@using Crosscuting.Extensions
+@inject Apresentation.Services.AlunoServices.GetAlunoService GetAlunoService
+@inject Apresentation.Services.AlunoServices.RemoveAlunoService RemoveAlunoService
+
+@if (Alunos != null && Alunos.Any())
+{
+    <table class="table table-hover table-responsive-md table-borderless">
+        <thead class="thead-light">
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Data Nascimento</th>
+                <th>Curso</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var aluno in Alunos)
+            {
+                <tr>
+                    <td title="@aluno.Nome?.ToUpper()">@aluno.Nome?.ToUpper()?.TrySubstring(20)</td>
+                    <td>@aluno.Cpf</td>
+                    <td>@aluno.DataNascimento</td>
+                    <td  title="@aluno.Curso.Nome?.ToUpper()">@aluno.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
+                    <td>
+                        <span title="Atualizar"
+                              class="oi oi-loop-circular oi-align-center"></span>
+                    </td>
+                    <td>
+                        <span title="Remover" @onclick="(() => DeleteAsync(aluno.Id))"
+                              class="oi oi-trash text-center oi-align-center"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    [Parameter] public bool Atualizar { get; set; }
+    [Parameter] public Action<AlunoGetViewModel> CallFormUpdate { get; set; }
+    private IEnumerable<AlunoGetViewModel> Alunos = null;
 
+    protected override async Task OnInitializedAsync() =>
+        Alunos = (IEnumerable<AlunoGetViewModel>)await Service
+                  .CallService(GetAlunoService, Enums.EnumTipoSendService.Listar);
+
+    protected override async Task OnParametersSetAsync() =>
+        Alunos = (IEnumerable<AlunoGetViewModel>)await Service
+                 .CallService(GetAlunoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task DeleteAsync(Guid id)
+    {
+        if ((bool)await Service.CallService(RemoveAlunoService, Enums.EnumTipoSendService.Excluir,
+                                new AlunoRemoveViewModel { Id = id }))
+        {
+            Alunos = (IEnumerable<AlunoGetViewModel>)await Service
+                 .CallService(GetAlunoService, Enums.EnumTipoSendService.Listar);
+            StateHasChanged();
+        }
+    }
+
+    //private void GetFormUpdate(CursoGetViewModel curso) => CallFormUpdate.Invoke(curso);
 }

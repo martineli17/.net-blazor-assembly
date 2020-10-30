@@ -1,4 +1,5 @@
-﻿using Apresentation.Services.Base;
+﻿using Apresentation.Services.AlunoServices;
+using Apresentation.Services.Base;
 using Apresentation.Services.CursoServices;
 using Apresentation.Services.Validator;
 using Crosscuting.Notificacao;
@@ -44,12 +45,22 @@ namespace Apresentation.Configuracoes
             #endregion
 
             #region Services front
+
+            #region Curso
             service.TryAddScoped<InjectorServiceBaseApresentation>();
             service.TryAddTransient<ValidatorService>();
-            service.TryAddTransient<AddCursoService>();
+            service.TryAddTransient<Services.CursoServices.AddCursoService>();
             service.TryAddTransient<GetCursoService>();
             service.TryAddTransient<RemoveCursoService>();
             service.TryAddTransient<UpdateCursoService>();
+            #endregion
+
+            #region Aluno
+            service.TryAddTransient<AddAlunoService>();
+            service.TryAddTransient<GetAlunoService>();
+            service.TryAddTransient<RemoveAlunoService>();
+            #endregion
+
             #endregion
 
             return service;

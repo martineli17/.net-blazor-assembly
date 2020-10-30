@@ -1,5 +1,61 @@
-﻿<h3>Adicionar usuários</h3>
+﻿@using Apresentation.ViewModels.AlunoViewModel
+@using Apresentation.ViewModels.CursoViewModel
+@inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
+@inject Apresentation.Services.AlunoServices.AddAlunoService AddAlunoService
+
+<form>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="aluno-nome" class="">Nome</label>
+            <input maxlength="60" id="aluno-nome" @bind="Aluno.Nome" type="text" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="aluno-cpf" class="">CPF</label>
+            <input maxlength="11" id="aluno-cpf" @bind="Aluno.Cpf" type="text" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label for="aluno-nascimento" class="">Data nascimento</label>
+            <input @bind="Aluno.DataNascimento" id="aluno-nascimento" type="date" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="curso" class="">Curso</label>
+            <select @bind="Aluno.IdCurso" id="curso" class="form-control">
+                @if (Cursos != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var cursos in Cursos?.GroupBy(x => x.AreaAtuacao))
+                    {
+                        <optgroup label="@cursos?.Key">
+                            @foreach (var curso in cursos?.ToList())
+                            {
+                                <option value="@curso?.Id">@curso?.Nome</option>
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
+        Cadastrar
+    </button>
+</div>
 
 @code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    private AlunoAddViewModel Aluno { get; set; } = new AlunoAddViewModel();
+    private IEnumerable<CursoGetViewModel> Cursos = null;
 
+    protected override async Task OnInitializedAsync() =>
+      Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(AddAlunoService, Enums.EnumTipoSendService.Adicionar, Aluno))
+            OnRefreshList.Invoke();
+    }
 }
