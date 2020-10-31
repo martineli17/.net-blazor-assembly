@@ -8,5 +8,6 @@ namespace Apresentation.ViewModels.AlunoViewModel
         public string Cpf { get; set; }
         public DateTime DataNascimento { get; set; }
         public CursoGetViewModel Curso { get; set; }
+        public Guid IdCurso { get; set; }
     }
 }

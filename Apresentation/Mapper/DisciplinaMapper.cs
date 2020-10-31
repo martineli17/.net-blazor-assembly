@@ -1,10 +1,6 @@
 ﻿using Apresentation.ViewModels.DisciplinaViewModel;
-using Dominio.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
+using Dominio.Entidades;
 
 namespace Apresentation.Mapper
 {
@@ -14,8 +10,7 @@ namespace Apresentation.Mapper
         {
             CreateMap<DisciplinaAddViewModel, Disciplina>();
             CreateMap<Disciplina, DisciplinaGetViewModel>();
-            CreateMap<DisciplinaGetViewModel, Disciplina>()
-                .ForMember(dest => dest.IdCurso, options => options.MapFrom(src => src.Curso.Id));
+            CreateMap<DisciplinaGetViewModel, Disciplina>().BeforeMap((src, dest) => src.Curso = null);
         }
         
     }

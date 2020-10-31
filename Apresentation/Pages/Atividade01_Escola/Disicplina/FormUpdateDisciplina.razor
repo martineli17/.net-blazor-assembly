@@ -28,7 +28,7 @@
                         <optgroup label="@cursos?.Key">
                             @foreach (var curso in cursos?.ToList())
                             {
-                                <option selected="@(curso.Id == Disciplina.Curso.Id ? "selected" : null)"
+                                <option selected="@(curso.Id == Disciplina.IdCurso ? "selected" : null)"
                                         value="@curso?.Id">
                                     @curso?.Nome
                                 </option>

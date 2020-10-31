@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-4">
             <label for="curso-update" class="">Curso</label>
-            <select @bind="Aluno.Curso.Id" id="curso-update" class="form-control">
+            <select @bind="Aluno.IdCurso" id="curso-update" class="form-control">
                 @if (Cursos != null)
                 {
                     <option value="@Guid.Empty">Selecione</option>
@@ -28,7 +28,7 @@
                         <optgroup label="@cursos?.Key">
                             @foreach (var curso in cursos?.ToList())
                             {
-                                <option selected="@(curso.Id == Aluno.Curso.Id ? "selected" : null)" 
+                                <option selected="@(curso.Id == Aluno.IdCurso ? "selected" : null)" 
                                         value="@curso?.Id">@curso?.Nome</option>
                             }
                         </optgroup>
