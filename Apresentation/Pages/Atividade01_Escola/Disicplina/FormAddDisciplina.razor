@@ -1,5 +1,62 @@
-﻿<h3>FormAddDisciplina</h3>
+﻿@using Apresentation.ViewModels.DisciplinaViewModel
+@using Apresentation.ViewModels.CursoViewModel
+@inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
+@inject Apresentation.Services.DisciplinaServices.AddDisciplinaService AddDisciplinaService
+
+<form>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="disciplina-nome" class="">Nome</label>
+            <input maxlength="60" id="disciplina-nome" @bind="Disciplina.Nome" type="text" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="disciplina-cargaHoraria" class="">Carga Horária</label>
+            <input maxlength="11" id="disciplina-cargaHoraria" @bind="Disciplina.CargaHoraria" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="disciplina-notaminima" class="">Nota mínima para aprovação</label>
+            <input @bind="Disciplina.NotaMinimaAprovacao" id="disciplina-notaminima" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="curso" class="">Curso</label>
+            <select @bind="Disciplina.IdCurso" id="curso" class="form-control">
+                @if (Cursos != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var cursos in Cursos?.GroupBy(x => x.AreaAtuacao))
+                    {
+                        <optgroup label="@cursos?.Key">
+                            @foreach (var curso in cursos?.ToList())
+                            {
+                                <option value="@curso?.Id">@curso?.Nome</option>
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
+        Cadastrar
+    </button>
+</div>
+
 
 @code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    private DisciplinaAddViewModel Disciplina { get; set; } = new DisciplinaAddViewModel();
+    private IEnumerable<CursoGetViewModel> Cursos = null;
 
+    protected override async Task OnInitializedAsync() =>
+      Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(AddDisciplinaService, Enums.EnumTipoSendService.Adicionar, Disciplina))
+            OnRefreshList.Invoke();
+    }
 }

@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Atividade02_Banco\" />
-    <Folder Include="Services\Disciplina\" />
   </ItemGroup>
 
   <ItemGroup>

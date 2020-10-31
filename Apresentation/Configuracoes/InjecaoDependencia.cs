@@ -1,6 +1,7 @@
 ﻿using Apresentation.Services.AlunoServices;
 using Apresentation.Services.Base;
 using Apresentation.Services.CursoServices;
+using Apresentation.Services.DisciplinaServices;
 using Apresentation.Services.Validator;
 using Crosscuting.Notificacao;
 using Dominio.Interfaces.Repositorio;
@@ -62,6 +63,12 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<UpdateAlunoService>();
             #endregion
 
+            #region Disciplina
+            service.TryAddTransient<AddDisciplinaService>();
+            service.TryAddTransient<GetDisciplinaService>();
+            service.TryAddTransient<UpdateDisciplinaService>();
+            service.TryAddTransient<RemoveDisciplinaService>();
+            #endregion
             #endregion
 
             return service;

@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Crosscuting.Extensions;
+using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
 using Dominio.Interfaces.Service;
 using Service.Services.ServicesBase;
@@ -19,7 +20,7 @@ namespace Service.Services
 
         public async Task<Disciplina> AddAsync(Disciplina entidade)
         {
-            if (await ValidarCursoExistente(entidade.IdCurso))
+            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarDisciplinaDuplicada(entidade))
                 return entidade;
             await base.AddAsync(entidade, new DisciplinaValidator());
             return entidade;
@@ -27,13 +28,24 @@ namespace Service.Services
 
         public async Task<Disciplina> UpdateAsync(Disciplina entidade)
         {
-            if (await ValidarCursoExistente(entidade.IdCurso)) 
+            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarDisciplinaDuplicada(entidade, true)) 
                 return entidade;
             await base.UpdateAsync(entidade, new DisciplinaValidator());
             return entidade;
         }
 
         #region Metodos privados
+        private async Task<bool> ValidarDisciplinaDuplicada(Disciplina entidade, bool update = false)
+        {
+            if (entidade == null ||
+                (await Repositorio.GetAsync(x => (!update || x.Id != entidade.Id)
+                && x.Nome == entidade.Nome && x.IdCurso == entidade.IdCurso)).HasValue())
+            {
+                Injector.Notificador.Add("Disciplina já registrada no curso informado.");
+                return false;
+            }
+            return true;
+        }
         private async Task<bool> ValidarCursoExistente(Guid idCurso)
         {
             if (await _cursoRepositorio.GetByIdAsync(idCurso) is null)

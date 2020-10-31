@@ -1,5 +1,75 @@
-﻿<h3>FormUpdateDisciplina</h3>
+﻿@using Apresentation.ViewModels.DisciplinaViewModel
+@using Apresentation.ViewModels.CursoViewModel
+@inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
+@inject Apresentation.Services.DisciplinaServices.UpdateDisciplinaService UpdateDisciplinaService
+
+<form>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="disciplina-nome" class="">Nome</label>
+            <input maxlength="60" id="disciplina-nome" @bind="Disciplina.Nome" type="text" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="disciplina-cargaHoraria" class="">Carga Horária</label>
+            <input maxlength="11" id="disciplina-cargaHoraria" @bind="Disciplina.CargaHoraria" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="disciplina-notaminima" class="">Nota mínima para aprovação</label>
+            <input @bind="Disciplina.NotaMinimaAprovacao" id="disciplina-notaminima" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="curso" class="">Curso</label>
+            <select @bind="Disciplina.IdCurso" id="curso" class="form-control">
+                @if (Cursos != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var cursos in Cursos?.GroupBy(x => x.AreaAtuacao))
+                    {
+                        <optgroup label="@cursos?.Key">
+                            @foreach (var curso in cursos?.ToList())
+                            {
+                                <option selected="@(curso.Id == Disciplina.Curso.Id ? "selected" : null)"
+                                        value="@curso?.Id">
+                                    @curso?.Nome
+                                </option>
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <div class="col-md-1">
+        <button @onclick="CancelSubmit" class="btn btn-purple">
+            Cancelar
+        </button>
+    </div>
+    <div class="col-md-1">
+        <button @onclick="HandleSubmit" class="btn btn-purple">
+            Atualizar
+        </button>
+    </div>
+</div>
+
 
 @code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    [Parameter] public Action OnCancel { get; set; }
+    [Parameter] public DisciplinaGetViewModel Disciplina { get; set; }
+    private IEnumerable<CursoGetViewModel> Cursos = null;
 
+    protected override async Task OnInitializedAsync() =>
+     Cursos = (IEnumerable<CursoGetViewModel>)await Service
+               .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(UpdateDisciplinaService, Enums.EnumTipoSendService.Adicionar, Disciplina))
+            OnRefreshList.Invoke();
+    }
+
+    private void CancelSubmit() => OnCancel.Invoke();
 }

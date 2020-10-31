@@ -40,7 +40,8 @@ namespace Repositorio.Repositorios
         public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             var entidade = await Context.Set<TEntity>().FindAsync(id);
-            Context.Entry(entidade).State = EntityState.Detached;
+            if (entidade != null)
+                Context.Entry(entidade).State = EntityState.Detached;
             return entidade;
         }
 

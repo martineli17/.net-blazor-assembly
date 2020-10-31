@@ -1,6 +1,51 @@
 ﻿@page "/escola/disciplina"
-<h3>Home | Disciplina</h3>
+@using Apresentation.ViewModels.DisciplinaViewModel
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="escola">Escola</a></li>
+        <li class="breadcrumb-item"><a>Disciplina</a></li>
+    </ol>
+</nav>
+
+<div hidden="@HiddenFormularioAdicionar">
+    <FormAddDisciplina OnRefreshList="RefreshListagem" />
+</div>
+@if (DisciplinaAtualizar != null)
+{
+<div hidden="@HiddenFormularioAtualizar">
+    <FormUpdateDisciplina OnCancel="CallFormularioAdicionar" Disciplina="DisciplinaAtualizar" OnRefreshList="RefreshListagem" />
+</div>
+}
+<div>
+    <ListDisciplina CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
+</div>
 @code {
+    private bool AtualizarListagem;
+    private string HiddenFormularioAdicionar = null;
+    private string HiddenFormularioAtualizar = "hidden";
+    private DisciplinaGetViewModel DisciplinaAtualizar = null;
+
+    private void RefreshListagem()
+    {
+        AtualizarListagem = !AtualizarListagem;
+        StateHasChanged();
+    }
+
+    private void CallFormularioAdicionar()
+    {
+        DisciplinaAtualizar = null;
+        HiddenFormularioAdicionar = null;
+        HiddenFormularioAtualizar = "hidden";
+        StateHasChanged();
+    }
+
+    private void CallFormularioAtualizar(DisciplinaGetViewModel disciplina)
+    {
+        DisciplinaAtualizar = disciplina;
+        HiddenFormularioAtualizar = null;
+        HiddenFormularioAdicionar = "hidden";
+        StateHasChanged();
+    }
 
 }
