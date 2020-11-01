@@ -1,0 +1,114 @@
+﻿@using Apresentation.ViewModels.AlunoViewModel
+@using Apresentation.ViewModels.CursoViewModel
+@using Apresentation.ViewModels.DisciplinaViewModel
+@using Apresentation.ViewModels.AlunoDisciplinaViewModel
+@inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
+@inject Apresentation.Services.DisciplinaServices.GetDisciplinaService GetDisciplinaService
+@inject Apresentation.Services.AlunoServices.GetAlunoService GetAlunoService
+@inject Apresentation.Services.AlunoDisciplinaServices.UpdateAlunoDisciplinaService UpdateAlunoDisciplinaService
+
+<form>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="curso" class="">Curso</label>
+            <select @onchange="(x => GetDisciplinasEAlunos(Guid.Parse(x.Value.ToString())))" id="curso" class="form-control">
+                @if (Cursos != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var cursos in Cursos?.GroupBy(x => x.AreaAtuacao))
+                    {
+                        <optgroup label="@cursos?.Key">
+                            @foreach (var curso in cursos?.ToList())
+                            {
+                                <option value="@curso?.Id">@curso?.Nome</option>
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="disciplina" class="">Disciplina</label>
+            <select @bind="AlunoDisciplina.IdDisciplina" id="disciplina" class="form-control">
+                @if (Disciplinas != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var disciplina in Disciplinas)
+                    {
+                        <option value="@disciplina?.Id">@disciplina?.Nome</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="aluno" class="">Aluno</label>
+            <select @bind="AlunoDisciplina.IdAluno" id="aluno" class="form-control">
+                @if (Alunos != null)
+                {
+                    <option value="@Guid.Empty">Selecione</option>
+                    @foreach (var aluno in Alunos)
+                    {
+                        <option value="@aluno?.Id">@aluno?.Nome</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="aluno-disciplina-nota" class="">Nota</label>
+            <input maxlength="60" id="aluno-disciplina-nota" @bind="AlunoDisciplina.Nota" type="number" class="form-control" />
+        </div>
+
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <div class="col-md-1">
+        <button @onclick="CancelSubmit" class="btn btn-purple">
+            Cancelar
+        </button>
+    </div>
+    <div class="col-md-1">
+        <button @onclick="HandleSubmit" class="btn btn-purple">
+            Atualizar
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    [Parameter] public Action OnCancel { get; set; }
+    [Parameter] public AlunoDisciplinaAddViewModel AlunoDisciplina { get; set; }
+    private IEnumerable<CursoGetViewModel> Cursos = null;
+    private IEnumerable<DisciplinaGetViewModel> Disciplinas = null;
+    private IEnumerable<AlunoGetViewModel> Alunos = null;
+    private Guid IdCurso = Guid.Empty;
+
+    protected override async Task OnInitializedAsync() =>
+      Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(UpdateAlunoDisciplinaService, Enums.EnumTipoSendService.Atualizar, AlunoDisciplina))
+        {
+            OnRefreshList.Invoke();
+        }
+    }
+
+    private void CancelSubmit() => OnCancel.Invoke();
+
+    private async Task GetDisciplinasEAlunos(Guid id)
+    {
+        IdCurso = id;
+        Disciplinas = (IEnumerable<DisciplinaGetViewModel>)await Service
+             .CallService(GetDisciplinaService, Enums.EnumTipoSendService.Listar,
+                new DisciplinaFiltroViewModel { IdCurso = id });
+
+        Alunos = (IEnumerable<AlunoGetViewModel>)await Service
+         .CallService(GetAlunoService, Enums.EnumTipoSendService.Listar,
+            new AlunoFiltroViewModel { IdCurso = IdCurso });
+    }
+}

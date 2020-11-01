@@ -11,12 +11,12 @@
 <div hidden="@HiddenFormularioAdicionar">
     <FormAddAlunoDisciplina OnRefreshList="RefreshListagem" />
 </div>
-@*@if (Disciplina != null)
+@if (AlunoDisciplina != null)
 {
     <div hidden="@HiddenFormularioAtualizar">
-        <FormUpdateDisciplina OnCancel="CallFormularioAdicionar" Disciplina="Disciplina" OnRefreshList="RefreshListagem" />
+        <FormUpdateAlunoDisciplina OnCancel="CallFormularioAdicionar" AlunoDisciplina="AlunoDisciplina" OnRefreshList="RefreshListagem" />
     </div>
-}*@
+}
 <div>
     <ListAlunoDisciplina CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
 </div>
