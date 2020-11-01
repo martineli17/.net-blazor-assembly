@@ -7,7 +7,6 @@ namespace Apresentation.ViewModels.AlunoDisciplinaViewModel
 {
     public class AlunoDisciplinaGetViewModel : AlunoDisciplinaBaseViewModel
     {
-        public Guid Id { get; set; }
         public DisciplinaGetViewModel Disciplina { get; set; }
         public AlunoGetViewModel Aluno { get; set; }
         public EnumStatusFinal Situacao { get; set; }

@@ -20,7 +20,7 @@ namespace Service.Services
 
         public async Task<Disciplina> AddAsync(Disciplina entidade)
         {
-            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarDisciplinaDuplicada(entidade))
+            if (!await ValidarCursoExistente(entidade.IdCurso, entidade) || !await ValidarDisciplinaDuplicada(entidade))
                 return entidade;
             await base.AddAsync(entidade, new DisciplinaValidator());
             return entidade;
@@ -28,7 +28,7 @@ namespace Service.Services
 
         public async Task<Disciplina> UpdateAsync(Disciplina entidade)
         {
-            if (!await ValidarCursoExistente(entidade.IdCurso) || !await ValidarDisciplinaDuplicada(entidade, true)) 
+            if (!await ValidarCursoExistente(entidade.IdCurso, entidade) || !await ValidarDisciplinaDuplicada(entidade, true)) 
                 return entidade;
             await base.UpdateAsync(entidade, new DisciplinaValidator());
             return entidade;
@@ -46,11 +46,17 @@ namespace Service.Services
             }
             return true;
         }
-        private async Task<bool> ValidarCursoExistente(Guid idCurso)
+        private async Task<bool> ValidarCursoExistente(Guid idCurso, Disciplina entidade)
         {
+            var curso = await _cursoRepositorio.GetByIdAsync(idCurso);
             if (await _cursoRepositorio.GetByIdAsync(idCurso) is null)
             {
                 Injector.Notificador.Add("Curso solicitado não existe.");
+                return false;
+            }
+            if(curso.CargaHoraria < entidade.CargaHoraria)
+            {
+                Injector.Notificador.Add("Carga horária inválida! Duração maior que a carga horária total do curso.");
                 return false;
             }
             return true;

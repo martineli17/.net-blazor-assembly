@@ -38,7 +38,7 @@
                                     <td>@aluno.GetSituacaoMensagem().ToUpper()</td>
                                     <td>@aluno.Nota</td>
                                     <td>
-                                        <span title="Atualizar"
+                                        <span title="Atualizar"  @onclick="(() => GetFormUpdate(aluno))"
                                               class="oi oi-task oi-align-center"></span>
                                     </td>
                                     <td>
@@ -80,5 +80,6 @@
         }
     }
 
-    //private void GetFormUpdate(AlunoGetViewModel aluno) => CallFormUpdate.Invoke(aluno);
+    private void GetFormUpdate(AlunoDisciplinaGetViewModel alunoDisciplina) =>
+        CallFormUpdate.Invoke(alunoDisciplina);
 }

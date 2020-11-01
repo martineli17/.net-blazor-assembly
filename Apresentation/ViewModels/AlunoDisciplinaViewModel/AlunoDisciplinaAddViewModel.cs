@@ -1,7 +1,8 @@
-﻿namespace Apresentation.ViewModels.AlunoDisciplinaViewModel
+﻿using System;
+
+namespace Apresentation.ViewModels.AlunoDisciplinaViewModel
 {
     public class AlunoDisciplinaAddViewModel : AlunoDisciplinaBaseViewModel
     {
-
     }
 }

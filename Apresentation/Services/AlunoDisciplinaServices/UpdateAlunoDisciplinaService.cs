@@ -23,7 +23,7 @@ namespace Apresentation.Services.AlunoDisciplinaServices
             var modelCast = (AlunoDisciplinaGetViewModel)model;
             if (!ValidarId(modelCast.IdAluno, "Necessário selecionar um aluno.") ||
                 !ValidarId(modelCast.IdDisciplina, "Necessário selecionar uma disciplina.")) return false;
-            await AlunoDisciplina.AddAsync(Injector.Mapper.Map<AlunoDisciplina>(modelCast));
+            await AlunoDisciplina.UpdateAsync(Injector.Mapper.Map<AlunoDisciplina>(modelCast));
             return Injector.Notificador.IsValido();
         }
     }

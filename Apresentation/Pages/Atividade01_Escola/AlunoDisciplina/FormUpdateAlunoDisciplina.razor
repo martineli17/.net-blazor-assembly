@@ -9,7 +9,7 @@
 
 <form>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="curso" class="">Curso</label>
             <select @onchange="(x => GetDisciplinasEAlunos(Guid.Parse(x.Value.ToString())))" id="curso" class="form-control">
                 @if (Cursos != null)
@@ -28,7 +28,7 @@
             </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="disciplina" class="">Disciplina</label>
             <select @bind="AlunoDisciplina.IdDisciplina" id="disciplina" class="form-control">
                 @if (Disciplinas != null)
@@ -42,7 +42,7 @@
             </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="aluno" class="">Aluno</label>
             <select @bind="AlunoDisciplina.IdAluno" id="aluno" class="form-control">
                 @if (Alunos != null)
@@ -80,15 +80,19 @@
 @code {
     [Parameter] public Action OnRefreshList { get; set; }
     [Parameter] public Action OnCancel { get; set; }
-    [Parameter] public AlunoDisciplinaAddViewModel AlunoDisciplina { get; set; }
+    [Parameter] public AlunoDisciplinaGetViewModel AlunoDisciplina { get; set; }
     private IEnumerable<CursoGetViewModel> Cursos = null;
     private IEnumerable<DisciplinaGetViewModel> Disciplinas = null;
     private IEnumerable<AlunoGetViewModel> Alunos = null;
     private Guid IdCurso = Guid.Empty;
 
-    protected override async Task OnInitializedAsync() =>
-      Cursos = (IEnumerable<CursoGetViewModel>)await Service
-                .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+    protected override async Task OnInitializedAsync()
+    {
+        Cursos = new List<CursoGetViewModel>() { AlunoDisciplina.Disciplina.Curso };
+        Disciplinas = new List<DisciplinaGetViewModel>() { AlunoDisciplina.Disciplina };
+        Alunos = new List<AlunoGetViewModel>() { AlunoDisciplina.Aluno };
+        IdCurso = AlunoDisciplina.Disciplina.Curso.Id;
+    }
 
     private async Task HandleSubmit()
     {

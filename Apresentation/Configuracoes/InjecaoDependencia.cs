@@ -75,6 +75,7 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<AddAlunoDisciplinaService>();
             service.TryAddTransient<GetAlunoDisciplinaServices>();
             service.TryAddTransient<RemoveAlunoDisciplinaServices>();
+            service.TryAddTransient<UpdateAlunoDisciplinaService>();
             #endregion
 
             #endregion

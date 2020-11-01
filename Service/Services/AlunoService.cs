@@ -49,9 +49,10 @@ namespace Service.Services
         {
             if (entidade == null || 
                 (await Repositorio.GetAsync(x => (!update || x.Id != entidade.Id) 
-                && x.Cpf == entidade.Cpf && x.IdCurso == entidade.IdCurso)).HasValue())
+                && ((x.Cpf == entidade.Cpf && x.IdCurso == entidade.IdCurso)  ||
+                (x.Nome != entidade.Nome && x.Cpf == entidade.Cpf)))).HasValue())
             {
-                Injector.Notificador.Add("Aluno já registrado no curso informado.");
+                Injector.Notificador.Add("Aluno já registrado.");
                 return false;
             }
             return true;
