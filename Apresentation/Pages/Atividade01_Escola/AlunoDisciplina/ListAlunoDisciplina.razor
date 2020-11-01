@@ -22,6 +22,7 @@
                                 <th>Disciplina</th>
                                 <th>Aluno</th>
                                 <th>Situacao</th>
+                                <th>Nota mínima</th>
                                 <th>Nota</th>
                                 <th></th>
                                 <th></th>
@@ -36,6 +37,7 @@
                                     <td title="@aluno.Disciplina.Nome.ToUpper()">@aluno.Disciplina.Nome.ToUpper().TrySubstring(20)</td>
                                     <td title="@aluno.Aluno.Nome.ToUpper()">@aluno.Aluno.Nome.ToUpper().TrySubstring(20)</td>
                                     <td>@aluno.GetSituacaoMensagem().ToUpper()</td>
+                                    <td>@aluno.Disciplina.NotaMinimaAprovacao</td>
                                     <td>@aluno.Nota</td>
                                     <td>
                                         <span title="Atualizar"  @onclick="(() => GetFormUpdate(aluno))"
