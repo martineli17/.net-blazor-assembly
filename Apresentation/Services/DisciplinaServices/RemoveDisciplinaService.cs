@@ -1,10 +1,7 @@
 ﻿using Apresentation.Services.Base;
 using Apresentation.ViewModels;
-using Apresentation.ViewModels.DisciplinaViewModel;
 using Dominio.Interfaces.Service;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Apresentation.Services.DisciplinaServices
@@ -18,7 +15,7 @@ namespace Apresentation.Services.DisciplinaServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            await DisciplinaService.RemoveAsync(model == null ? Guid.Empty : ((DisciplinaRemoveViewModel)model).Id);
+            await DisciplinaService.RemoveAsync(model == null ? Guid.Empty : ((BaseRemoveViewModel)model).Id);
             return Injector.Notificador.IsValido();
         }
     }

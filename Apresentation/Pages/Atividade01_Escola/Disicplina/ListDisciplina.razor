@@ -3,7 +3,53 @@
 @inject Apresentation.Services.DisciplinaServices.GetDisciplinaService GetDisciplinaService
 @inject Apresentation.Services.DisciplinaServices.RemoveDisciplinaService RemoveDisciplinaService
 
+
 @if (Disciplinas != null && Disciplinas.Any())
+{
+    foreach (var agrupamentoCurso in Disciplinas.GroupBy(x => x.Curso.Nome))
+    {
+        <div class="card text-center m-md-4">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bolder">CURSO | @agrupamentoCurso.Key.ToUpper()</h5>
+                <table class="table table-hover table-responsive-md table-borderless">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Carga horária</th>
+                            <th>Nota mínima para aprovação</th>
+                            <th>Curso</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var disciplina in agrupamentoCurso.ToList())
+                        {
+                            <tr>
+                                <td title="@disciplina.Nome?.ToUpper()">@disciplina.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td>@disciplina.CargaHoraria</td>
+                                <td>@disciplina.NotaMinimaAprovacao</td>
+                                <td title="@disciplina.Curso.Nome?.ToUpper()">@disciplina.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td>
+                                    <span title="Atualizar" @onclick="(() => GetFormUpdate(disciplina))"
+                                          class="oi oi-loop-circular oi-align-center"></span>
+                                </td>
+                                <td>
+                                    <span title="Remover" @onclick="(() => DeleteAsync(disciplina.Id))"
+                                          class="oi oi-trash text-center oi-align-center"></span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+}
+
+
+@*@if (Disciplinas != null && Disciplinas.Any())
 {
     <table class="table table-hover table-responsive-md table-borderless">
         <thead class="thead-light">
@@ -36,7 +82,7 @@
             }
         </tbody>
     </table>
-}
+}*@
 
 @code {
     [Parameter] public bool Atualizar { get; set; }
@@ -54,7 +100,7 @@
     private async Task DeleteAsync(Guid id)
     {
         if ((bool)await Service.CallService(RemoveDisciplinaService, Enums.EnumTipoSendService.Excluir,
-                                new DisciplinaRemoveViewModel { Id = id }))
+                                new Apresentation.ViewModels.BaseRemoveViewModel { Id = id }))
         {
             Disciplinas = (IEnumerable<DisciplinaGetViewModel>)await Service
              .CallService(GetDisciplinaService, Enums.EnumTipoSendService.Listar);

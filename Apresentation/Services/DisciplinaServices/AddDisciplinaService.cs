@@ -20,7 +20,7 @@ namespace Apresentation.Services.DisciplinaServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            if (ValidarId(((DisciplinaAddViewModel)model).IdCurso, "Necessário selecionar um curso"))
+            if (!ValidarId(((DisciplinaAddViewModel)model).IdCurso, "Necessário selecionar um curso."))
                 return false;
             await DisciplinaService.AddAsync(Injector.Mapper.Map<Disciplina>(model));
             return Injector.Notificador.IsValido();

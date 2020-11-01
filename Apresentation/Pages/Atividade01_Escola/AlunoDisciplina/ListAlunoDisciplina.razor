@@ -1,0 +1,84 @@
+﻿@using Apresentation.ViewModels.AlunoDisciplinaViewModel
+@using Apresentation.ViewModels
+@using Crosscuting.Extensions
+@inject Apresentation.Services.AlunoDisciplinaServices.GetAlunoDisciplinaServices GetAlunoDisciplinaServices
+@inject Apresentation.Services.AlunoDisciplinaServices.RemoveAlunoDisciplinaServices RemoveAlunoDisciplinaServices
+
+@if (AlunoDisciplina != null && AlunoDisciplina.Any())
+{
+    foreach (var agrupamentoCurso in AlunoDisciplina.GroupBy(x => x.Disciplina.Curso.Nome))
+    {
+        <div class="card text-center m-md-4">
+            <div class="card-body">
+                <h5 class="card-title font-weight-bolder">CURSO | @agrupamentoCurso.Key.ToUpper()</h5>
+                @foreach (var agrupamentoDisciplina in agrupamentoCurso.GroupBy(x => x.Disciplina.Nome))
+                {
+                    <h6 class="card-subtitle mb-2 text-muted  font-weight-bolde text-center">DISCIPLINA | @agrupamentoDisciplina.Key.ToUpper()</h6>
+                    <table class="table table-hover table-responsive-md table-borderless">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Curso</th>
+                                <th>Área</th>
+                                <th>Disciplina</th>
+                                <th>Aluno</th>
+                                <th>Situacao</th>
+                                <th>Nota</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var aluno in agrupamentoDisciplina.ToList())
+                            {
+                                <tr>
+                                    <td title="@aluno.Disciplina.Curso.Nome.ToUpper()">@aluno.Disciplina.Curso.Nome.ToUpper().TrySubstring(20)</td>
+                                    <td>@aluno.Disciplina.Curso.AreaAtuacao.ToUpper()</td>
+                                    <td title="@aluno.Disciplina.Nome.ToUpper()">@aluno.Disciplina.Nome.ToUpper().TrySubstring(20)</td>
+                                    <td title="@aluno.Aluno.Nome.ToUpper()">@aluno.Aluno.Nome.ToUpper().TrySubstring(20)</td>
+                                    <td>@aluno.GetSituacaoMensagem().ToUpper()</td>
+                                    <td>@aluno.Nota</td>
+                                    <td>
+                                        <span title="Atualizar"
+                                              class="oi oi-loop-circular oi-align-center"></span>
+                                    </td>
+                                    <td>
+                                        <span title="Remover" @onclick="(() => DeleteAsync(aluno.Id))"
+                                              class="oi oi-trash text-center oi-align-center"></span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    }
+
+}
+
+@code {
+    [Parameter] public bool Atualizar { get; set; }
+    [Parameter] public Action<AlunoDisciplinaGetViewModel> CallFormUpdate { get; set; }
+    private IEnumerable<AlunoDisciplinaGetViewModel> AlunoDisciplina = null;
+
+    protected override async Task OnInitializedAsync() =>
+        AlunoDisciplina = (IEnumerable<AlunoDisciplinaGetViewModel>)await Service
+                  .CallService(GetAlunoDisciplinaServices, Enums.EnumTipoSendService.Listar);
+
+    protected override async Task OnParametersSetAsync() =>
+        AlunoDisciplina = (IEnumerable<AlunoDisciplinaGetViewModel>)await Service
+                 .CallService(GetAlunoDisciplinaServices, Enums.EnumTipoSendService.Listar);
+
+    private async Task DeleteAsync(Guid id)
+    {
+        if ((bool)await Service.CallService(RemoveAlunoDisciplinaServices, Enums.EnumTipoSendService.Excluir,
+                                new BaseRemoveViewModel { Id = id }))
+        {
+            AlunoDisciplina = (IEnumerable<AlunoDisciplinaGetViewModel>)await Service
+                .CallService(GetAlunoDisciplinaServices, Enums.EnumTipoSendService.Listar);
+            StateHasChanged();
+        }
+    }
+
+    //private void GetFormUpdate(AlunoGetViewModel aluno) => CallFormUpdate.Invoke(aluno);
+}

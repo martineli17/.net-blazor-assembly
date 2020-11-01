@@ -1,4 +1,5 @@
-﻿using Apresentation.Services.AlunoServices;
+﻿using Apresentation.Services.AlunoDisciplinaServices;
+using Apresentation.Services.AlunoServices;
 using Apresentation.Services.Base;
 using Apresentation.Services.CursoServices;
 using Apresentation.Services.DisciplinaServices;
@@ -69,6 +70,13 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<UpdateDisciplinaService>();
             service.TryAddTransient<RemoveDisciplinaService>();
             #endregion
+
+            #region Aluno Disciplina
+            service.TryAddTransient<AddAlunoDisciplinaService>();
+            service.TryAddTransient<GetAlunoDisciplinaServices>();
+            service.TryAddTransient<RemoveAlunoDisciplinaServices>();
+            #endregion
+
             #endregion
 
             return service;

@@ -17,7 +17,7 @@ namespace Apresentation.Services.CursoServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            await CursoService.RemoveAsync(model == null ? Guid.Empty : ((CursoRemoveViewModel)model).Id);
+            await CursoService.RemoveAsync(model == null ? Guid.Empty : ((BaseRemoveViewModel)model).Id);
             return Injector.Notificador.IsValido();
         }
     }

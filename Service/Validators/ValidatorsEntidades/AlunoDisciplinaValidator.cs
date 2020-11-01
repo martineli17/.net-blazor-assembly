@@ -1,9 +1,6 @@
 ﻿using Dominio.Entidades;
 using FluentValidation;
 using Service.Validators.MessagensValidator;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Service.Validators.ValidatorsEntidades
 {
@@ -11,7 +8,8 @@ namespace Service.Validators.ValidatorsEntidades
     {
         public AlunoDisciplinaValidator()
         {
-            RuleFor(x => x.Nota).GreaterThanOrEqualTo(0).WithMessage(MensagemValidator.NaoMenorOuIgual("Nota"));
+            RuleFor(x => x.Nota).GreaterThanOrEqualTo(0).WithMessage(MensagemValidator.NaoMenorOuIgual("Nota")).When(x => x.Nota.HasValue);
+            RuleFor(x => x.Nota).LessThanOrEqualTo(100).WithMessage(MensagemValidator.NaoMaiorOuIgual("Nota")).When(x => x.Nota.HasValue);
             RuleFor(x => x.IdAluno).NotEmpty().WithMessage(MensagemValidator.ErroNoProcesso);
             RuleFor(x => x.IdDisciplina).NotEmpty().WithMessage(MensagemValidator.ErroNoProcesso);
         }

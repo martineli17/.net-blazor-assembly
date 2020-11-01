@@ -1,0 +1,60 @@
+﻿@page "/escola/aluno-disciplina"
+@using Apresentation.ViewModels.AlunoDisciplinaViewModel
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="escola">Escola</a></li>
+        <li class="breadcrumb-item"><a>Disciplina</a></li>
+    </ol>
+</nav>
+
+<div hidden="@HiddenFormularioAdicionar">
+    <FormAddAlunoDisciplina OnRefreshList="RefreshListagem" />
+</div>
+@*@if (Disciplina != null)
+{
+    <div hidden="@HiddenFormularioAtualizar">
+        <FormUpdateDisciplina OnCancel="CallFormularioAdicionar" Disciplina="Disciplina" OnRefreshList="RefreshListagem" />
+    </div>
+}*@
+<div>
+    <ListAlunoDisciplina CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
+</div>
+
+@code {
+    private bool AtualizarListagem;
+    private string HiddenFormularioAdicionar = null;
+    private string HiddenFormularioAtualizar = "hidden";
+    private AlunoDisciplinaGetViewModel AlunoDisciplina = null;
+
+    private void RefreshListagem()
+    {
+        AtualizarListagem = !AtualizarListagem;
+        StateHasChanged();
+    }
+
+    private void CallFormularioAdicionar()
+    {
+        AlunoDisciplina = null;
+        HiddenFormularioAdicionar = null;
+        HiddenFormularioAtualizar = "hidden";
+        StateHasChanged();
+    }
+
+    private void CallFormularioAtualizar(AlunoDisciplinaGetViewModel disciplina)
+    {
+        AlunoDisciplina = disciplina;
+        HiddenFormularioAtualizar = null;
+        HiddenFormularioAdicionar = "hidden";
+        StateHasChanged();
+    }
+
+    private void CallFormularioNota(AlunoDisciplinaGetViewModel disciplina)
+    {
+        AlunoDisciplina = disciplina;
+        HiddenFormularioAtualizar = "hidden";
+        HiddenFormularioAdicionar = "hidden";
+        StateHasChanged();
+    }
+
+}

@@ -16,7 +16,7 @@ namespace Apresentation.Services.AlunoServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            await AlunoService.RemoveAsync(model == null ? Guid.Empty : ((AlunoRemoveViewModel)model).Id);
+            await AlunoService.RemoveAsync(model == null ? Guid.Empty : ((BaseRemoveViewModel)model).Id);
             return Injector.Notificador.IsValido();
         }
     }

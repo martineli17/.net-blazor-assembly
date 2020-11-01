@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Apresentation.ViewModels
 {
@@ -11,6 +10,11 @@ namespace Apresentation.ViewModels
     public class BaseAddViewModel : IBaseViewModel
     {
         public string Nome { get; set; }
+    }
+
+    public class BaseRemoveViewModel : IBaseViewModel
+    {
+        public Guid Id { get; set; }
     }
 
     public interface IBaseViewModel { };

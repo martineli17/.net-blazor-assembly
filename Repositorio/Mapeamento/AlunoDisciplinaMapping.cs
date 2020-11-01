@@ -15,7 +15,7 @@ namespace Repositorio.Mapeamento
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.IdAluno);
             builder.HasIndex(x => x.IdDisciplina);
-            builder.Property(x => x.Nota).HasColumnName("NOTA").HasColumnType("number(5,2)").IsRequired();
+            builder.Property(x => x.Nota).HasColumnName("NOTA").HasColumnType("number(5,2)");
             builder.Property(x => x.IdAluno).HasColumnName("IDALUNO").HasColumnType("uniqueidentifier").IsRequired().HasMaxLength(100);
             builder.Property(x => x.IdDisciplina).HasColumnName("IDDISCIPLINA").HasColumnType("uniqueidentifier").IsRequired().HasMaxLength(100);
             builder.HasOne(aluno => aluno.Aluno).WithMany(aluno => aluno.AlunoDisciplina).HasForeignKey(x => x.IdAluno).IsRequired();

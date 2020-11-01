@@ -22,8 +22,8 @@ namespace Repositorio.Repositorios
         {
             await Task.Yield();
             return query is null ?
-              Context.AlunoDisciplina.Include(x => x.Aluno).Include(x => x.Disciplina).AsQueryable() :
-              Context.AlunoDisciplina.Include(x => x.Aluno).Include(x => x.Disciplina).Where(query).AsQueryable();
+              Context.AlunoDisciplina.Include(x => x.Aluno).Include(x => x.Disciplina).ThenInclude(x => x.Curso).AsQueryable() :
+              Context.AlunoDisciplina.Include(x => x.Aluno).Include(x => x.Disciplina).ThenInclude(x => x.Curso).Where(query).AsQueryable();
         }
     }
 }

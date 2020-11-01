@@ -55,7 +55,7 @@
     private async Task DeleteAsync(Guid id)
     {
         if ((bool)await Service.CallService(RemoveCursoService, Enums.EnumTipoSendService.Excluir,
-                                new CursoRemoveViewModel { Id = id }))
+                                new Apresentation.ViewModels.BaseRemoveViewModel { Id = id }))
         {
             Cursos = (IEnumerable<CursoGetViewModel>)await Service
                      .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);

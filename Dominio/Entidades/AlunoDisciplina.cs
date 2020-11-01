@@ -6,7 +6,7 @@ namespace Dominio.Entidades
     {
         public Guid IdAluno { get; private set; }
         public Guid IdDisciplina { get; private set; }
-        public double Nota { get; private set; }
+        public double? Nota { get; private set; }
         public Disciplina Disciplina { get; private set; }
         public Aluno Aluno { get; private set; }
 

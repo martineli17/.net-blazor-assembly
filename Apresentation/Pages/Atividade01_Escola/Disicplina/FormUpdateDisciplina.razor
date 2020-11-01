@@ -67,7 +67,7 @@
 
     private async Task HandleSubmit()
     {
-        if ((bool)await Service.CallService(UpdateDisciplinaService, Enums.EnumTipoSendService.Adicionar, Disciplina))
+        if ((bool)await Service.CallService(UpdateDisciplinaService, Enums.EnumTipoSendService.Atualizar, Disciplina))
             OnRefreshList.Invoke();
     }
 

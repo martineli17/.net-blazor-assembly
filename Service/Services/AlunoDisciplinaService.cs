@@ -12,7 +12,7 @@ namespace Service.Services
     {
         private readonly IDisciplinaRepositorio _disciplinaRepositorio;
         private readonly IAlunoRepositorio _alunoRepositorio;
-        public AlunoDisciplinaService(IBaseRepositorio<AlunoDisciplina> repositorio, InjectorServiceBase injector, 
+        public AlunoDisciplinaService(IAlunoDisciplinaRepositorio repositorio, InjectorServiceBase injector, 
                                 IDisciplinaRepositorio disciplinaRepositorio, IAlunoRepositorio alunoRepositorio) 
             : base(repositorio, injector)
         {
@@ -22,7 +22,7 @@ namespace Service.Services
 
         public async Task<AlunoDisciplina> AddAsync(AlunoDisciplina entidade)
         {
-            if (await ExisteDisciplina(entidade.IdDisciplina) && await ExisteAluno(entidade.IdAluno))
+            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno))
                 return entidade;
             await base.AddAsync(entidade, new AlunoDisciplinaValidator());
             return entidade;
@@ -30,7 +30,7 @@ namespace Service.Services
 
         public async Task<AlunoDisciplina> UpdateAsync(AlunoDisciplina entidade)
         {
-            if (await ExisteDisciplina(entidade.IdDisciplina) && await ExisteAluno(entidade.IdAluno))
+            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno))
                 return entidade;
             await base.UpdateAsync(entidade, new AlunoDisciplinaValidator());
             return entidade;

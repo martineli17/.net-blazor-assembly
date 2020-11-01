@@ -17,7 +17,7 @@ namespace Apresentation.Services.Base
                 Injector.Notificador.Add(mensagem);
                 return false;
             }
-            return false;
+            return true;
         }
     }
 }

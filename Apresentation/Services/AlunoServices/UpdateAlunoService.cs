@@ -16,7 +16,7 @@ namespace Apresentation.Services.AlunoServices
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            if (ValidarId(((AlunoGetViewModel)model).IdCurso, "Necessário selecionar um curso"))
+            if (!ValidarId(((AlunoGetViewModel)model).IdCurso, "Necessário selecionar um curso."))
                 return false;
             await AlunoService.UpdateAsync(Injector.Mapper.Map<Aluno>(model));
             return Injector.Notificador.IsValido();

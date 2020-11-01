@@ -64,7 +64,7 @@
 
     private async Task HandleSubmit()
     {
-        if ((bool)await Service.CallService(UpdateAlunoService, Enums.EnumTipoSendService.Adicionar, Aluno))
+        if ((bool)await Service.CallService(UpdateAlunoService, Enums.EnumTipoSendService.Atualizar, Aluno))
             OnRefreshList.Invoke();
     }
 
