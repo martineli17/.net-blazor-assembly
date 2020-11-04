@@ -1,5 +1,7 @@
-﻿using Apresentation.ViewModels.CursoViewModel;
+﻿using Apresentation.ViewModels.AlunoDisciplinaViewModel;
+using Apresentation.ViewModels.CursoViewModel;
 using System;
+using System.Collections.Generic;
 
 namespace Apresentation.ViewModels.AlunoViewModel
 {
@@ -9,5 +11,6 @@ namespace Apresentation.ViewModels.AlunoViewModel
         public DateTime DataNascimento { get; set; }
         public CursoGetViewModel Curso { get; set; }
         public Guid IdCurso { get; set; }
+        public IEnumerable<AlunoDisciplinaGetViewModel> AlunoDisciplina { get; set; }
     }
 }

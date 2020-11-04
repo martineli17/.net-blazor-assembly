@@ -2,6 +2,7 @@
 @using Apresentation.ViewModels.CursoViewModel
 @using Apresentation.ViewModels.DisciplinaViewModel
 @using Apresentation.ViewModels.AlunoDisciplinaViewModel
+@using Crosscuting.Extensions
 @inject Apresentation.Services.CursoServices.GetCursoService GetCursoService
 @inject Apresentation.Services.DisciplinaServices.GetDisciplinaService GetDisciplinaService
 @inject Apresentation.Services.AlunoServices.GetAlunoService GetAlunoService
@@ -12,15 +13,18 @@
         <div class="col-md-3">
             <label for="curso" class="">Curso</label>
             <select @onchange="(x => GetDisciplinasEAlunos(Guid.Parse(x.Value.ToString())))" id="curso" class="form-control">
-                @if (Cursos != null)
+                @if (Cursos.HasValue())
                 {
                     <option value="@Guid.Empty">Selecione</option>
                     @foreach (var cursos in Cursos?.GroupBy(x => x.AreaAtuacao))
                     {
                         <optgroup label="@cursos?.Key">
-                            @foreach (var curso in cursos?.ToList())
+                            @foreach (var curso in cursos.ToList())
                             {
-                                <option value="@curso?.Id">@curso?.Nome</option>
+                                <option selected="@(curso?.Id == AlunoDisciplina?.Disciplina?.Curso?.Id ? "selected" : null)"
+                                        value="@curso?.Id">
+                                    @curso?.Nome?.TrySubstring(20)
+                                </option>
                             }
                         </optgroup>
                     }
@@ -31,12 +35,15 @@
         <div class="col-md-3">
             <label for="disciplina" class="">Disciplina</label>
             <select @bind="AlunoDisciplina.IdDisciplina" id="disciplina" class="form-control">
-                @if (Disciplinas != null)
+                @if (Disciplinas.HasValue())
                 {
                     <option value="@Guid.Empty">Selecione</option>
                     @foreach (var disciplina in Disciplinas)
                     {
-                        <option value="@disciplina?.Id">@disciplina?.Nome</option>
+                        <option selected="@(disciplina?.Id == AlunoDisciplina?.Disciplina?.Id ? "selected" : null)"
+                                value="@disciplina?.Id">
+                            @disciplina?.Nome?.TrySubstring(20)
+                        </option>
                     }
                 }
             </select>
@@ -45,12 +52,15 @@
         <div class="col-md-3">
             <label for="aluno" class="">Aluno</label>
             <select @bind="AlunoDisciplina.IdAluno" id="aluno" class="form-control">
-                @if (Alunos != null)
+                @if (Alunos.HasValue())
                 {
                     <option value="@Guid.Empty">Selecione</option>
                     @foreach (var aluno in Alunos)
                     {
-                        <option value="@aluno?.Id">@aluno?.Nome</option>
+                        <option selected="@(aluno?.Id == AlunoDisciplina?.Aluno?.Id ? "selected" : null)"
+                                value="@aluno?.Id">
+                            @aluno?.Nome?.TrySubstring(20)
+                        </option>
                     }
                 }
             </select>
@@ -81,17 +91,19 @@
     [Parameter] public Action OnRefreshList { get; set; }
     [Parameter] public Action OnCancel { get; set; }
     [Parameter] public AlunoDisciplinaGetViewModel AlunoDisciplina { get; set; }
-    private IEnumerable<CursoGetViewModel> Cursos = null;
-    private IEnumerable<DisciplinaGetViewModel> Disciplinas = null;
-    private IEnumerable<AlunoGetViewModel> Alunos = null;
+    private IEnumerable<CursoGetViewModel> Cursos = new List<CursoGetViewModel>();
+    private IEnumerable<DisciplinaGetViewModel> Disciplinas = new List<DisciplinaGetViewModel>();
+    private IEnumerable<AlunoGetViewModel> Alunos = new List<AlunoGetViewModel>();
     private Guid IdCurso = Guid.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        Cursos = new List<CursoGetViewModel>() { AlunoDisciplina.Disciplina.Curso };
-        Disciplinas = new List<DisciplinaGetViewModel>() { AlunoDisciplina.Disciplina };
-        Alunos = new List<AlunoGetViewModel>() { AlunoDisciplina.Aluno };
         IdCurso = AlunoDisciplina.Disciplina.Curso.Id;
+        Cursos = (IEnumerable<CursoGetViewModel>)await Service
+                .CallService(GetCursoService, Enums.EnumTipoSendService.Listar);
+        Disciplinas = (IEnumerable<DisciplinaGetViewModel>)await Service
+           .CallService(GetDisciplinaService, Enums.EnumTipoSendService.Listar, new DisciplinaFiltroViewModel { IdCurso = IdCurso });
+        Alunos = new List<AlunoGetViewModel>() { AlunoDisciplina.Aluno };
     }
 
     private async Task HandleSubmit()

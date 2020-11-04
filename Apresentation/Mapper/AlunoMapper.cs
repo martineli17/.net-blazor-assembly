@@ -10,7 +10,9 @@ namespace Apresentation.Mapper
         {
             CreateMap<AlunoAddViewModel, Aluno>();
             CreateMap<Aluno, AlunoGetViewModel>();
-            CreateMap<AlunoGetViewModel, Aluno>().BeforeMap((src, dest) => src.Curso = null);
+            CreateMap<AlunoGetViewModel, Aluno>()
+                .BeforeMap((src, dest) => src.AlunoDisciplina = null)
+                .BeforeMap((src, dest) => src.Curso = null);
         }
     }
 }

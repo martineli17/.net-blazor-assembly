@@ -1,4 +1,5 @@
-﻿using Dominio.Entidades;
+﻿using Crosscuting.Extensions;
+using Dominio.Entidades;
 using Dominio.Interfaces.Repositorio;
 using Dominio.Interfaces.Service;
 using Service.Services.ServicesBase;
@@ -22,7 +23,7 @@ namespace Service.Services
 
         public async Task<AlunoDisciplina> AddAsync(AlunoDisciplina entidade)
         {
-            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno))
+            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno) || !await ValidarDuplicidade(entidade))
                 return entidade;
             await base.AddAsync(entidade, new AlunoDisciplinaValidator());
             return entidade;
@@ -30,7 +31,7 @@ namespace Service.Services
 
         public async Task<AlunoDisciplina> UpdateAsync(AlunoDisciplina entidade)
         {
-            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno))
+            if (!await ExisteDisciplina(entidade.IdDisciplina) || !await ExisteAluno(entidade.IdAluno) || !await ValidarDuplicidade(entidade, true))
                 return entidade;
             await base.UpdateAsync(entidade, new AlunoDisciplinaValidator());
             return entidade;
@@ -57,6 +58,17 @@ namespace Service.Services
             }
             return true;
         }
+
+        private async Task<bool> ValidarDuplicidade(AlunoDisciplina entidade, bool update = false)
+        {
+            if ((await Repositorio.GetAsync(x => !update && (x.IdAluno == entidade.IdAluno && x.IdDisciplina == entidade.IdDisciplina))).HasValue())
+            {
+                Injector.Notificador.Add("Aluno já matriculado nesta disciplina.");
+                return false;
+            }
+            return true;
+        }
+
         #endregion
     }
 }

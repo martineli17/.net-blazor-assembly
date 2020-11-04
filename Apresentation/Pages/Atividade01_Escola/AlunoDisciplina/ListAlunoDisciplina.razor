@@ -32,10 +32,10 @@
                             @foreach (var aluno in agrupamentoDisciplina.ToList())
                             {
                                 <tr>
-                                    <td title="@aluno.Disciplina.Curso.Nome.ToUpper()">@aluno.Disciplina.Curso.Nome.ToUpper().TrySubstring(20)</td>
+                                    <td title="@aluno.Disciplina.Curso.Nome.ToUpper()">@aluno.Disciplina.Curso.Nome.ToUpper().TrySubstring(30)</td>
                                     <td>@aluno.Disciplina.Curso.AreaAtuacao.ToUpper()</td>
-                                    <td title="@aluno.Disciplina.Nome.ToUpper()">@aluno.Disciplina.Nome.ToUpper().TrySubstring(20)</td>
-                                    <td title="@aluno.Aluno.Nome.ToUpper()">@aluno.Aluno.Nome.ToUpper().TrySubstring(20)</td>
+                                    <td title="@aluno.Disciplina.Nome.ToUpper()">@aluno.Disciplina.Nome.ToUpper().TrySubstring(30)</td>
+                                    <td title="@aluno.Aluno.Nome.ToUpper()">@aluno.Aluno.Nome.ToUpper().TrySubstring(30)</td>
                                     <td>@aluno.GetSituacaoMensagem().ToUpper()</td>
                                     <td>@aluno.Disciplina.NotaMinimaAprovacao</td>
                                     <td>@aluno.Nota</td>

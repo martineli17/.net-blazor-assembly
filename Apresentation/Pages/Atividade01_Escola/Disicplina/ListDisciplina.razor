@@ -26,10 +26,10 @@
                         @foreach (var disciplina in agrupamentoCurso.ToList())
                         {
                             <tr>
-                                <td title="@disciplina.Nome?.ToUpper()">@disciplina.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td title="@disciplina.Nome?.ToUpper()">@disciplina.Nome?.ToUpper()?.TrySubstring(30)</td>
                                 <td>@disciplina.CargaHoraria</td>
                                 <td>@disciplina.NotaMinimaAprovacao</td>
-                                <td title="@disciplina.Curso.Nome?.ToUpper()">@disciplina.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td title="@disciplina.Curso.Nome?.ToUpper()">@disciplina.Curso?.Nome?.ToUpper()?.TrySubstring(30)</td>
                                 <td>
                                     <span title="Atualizar" @onclick="(() => GetFormUpdate(disciplina))"
                                           class="oi oi-loop-circular oi-align-center"></span>

@@ -17,6 +17,7 @@
                             <th>CPF</th>
                             <th>Data Nascimento</th>
                             <th>Curso</th>
+                            <th>Disciplinas</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -25,10 +26,18 @@
                         @foreach (var aluno in agrupamentoCurso.ToList())
                         {
                             <tr>
-                                <td title="@aluno.Nome?.ToUpper()">@aluno.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td title="@aluno.Nome?.ToUpper()">@aluno.Nome?.ToUpper()?.TrySubstring(30)</td>
                                 <td>@aluno.Cpf</td>
                                 <td>@aluno.DataNascimento.ToString("dd/MM/yyyy")</td>
-                                <td title="@aluno.Curso.Nome?.ToUpper()">@aluno.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
+                                <td title="@aluno.Curso.Nome?.ToUpper()">@aluno.Curso?.Nome?.ToUpper()?.TrySubstring(30)</td>
+                                <td>
+                                    <select class="form-control">
+                                        @foreach (var item in aluno.AlunoDisciplina)
+                                        {
+                                            <option>@item?.Disciplina?.Nome?.ToUpper()?.TrySubstring(30)</option>
+                                        }
+                                    </select>
+                                </td>
                                 <td>
                                     <span title="Atualizar" @onclick="(() => GetFormUpdate(aluno))"
                                           class="oi oi-loop-circular oi-align-center"></span>
