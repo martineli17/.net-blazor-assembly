@@ -1,6 +1,7 @@
 ﻿using Dominio.ValuesType;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Dominio.Entidades
 {
@@ -15,7 +16,19 @@ namespace Dominio.Entidades
         public Disciplina() {  }
 
         public EnumStatusFinal StatusFinalAprovacao(double nota) => nota >= NotaMinimaAprovacao ? EnumStatusFinal.Aprovado :
-            nota >= NotaMinimaAprovacao * 0.4 ? EnumStatusFinal.Recuperacao : EnumStatusFinal.Reprovado;
+            nota >= NotaMaxima(NotaMinimaAprovacao) * 0.4 ? EnumStatusFinal.Recuperacao : EnumStatusFinal.Reprovado;
+
+        private double NotaMaxima(double NotaMinima)
+        {
+            double NotaMaxima;
+            double completaNota;
+            NotaMinima = NotaMinimaAprovacao;
+
+            completaNota = NotaMinima * 40 / NotaMinima;
+            NotaMaxima = completaNota + NotaMinima;
+
+            return NotaMaxima;
+        }
 
     }
 }
