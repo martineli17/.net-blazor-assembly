@@ -16,19 +16,7 @@ namespace Dominio.Entidades
         public Disciplina() {  }
 
         public EnumStatusFinal StatusFinalAprovacao(double nota) => nota >= NotaMinimaAprovacao ? EnumStatusFinal.Aprovado :
-            nota >= NotaMaxima(NotaMinimaAprovacao) * 0.4 ? EnumStatusFinal.Recuperacao : EnumStatusFinal.Reprovado;
-
-        private double NotaMaxima(double NotaMinima)
-        {
-            double NotaMaxima;
-            double completaNota;
-            NotaMinima = NotaMinimaAprovacao;
-
-            completaNota = NotaMinima * 40 / NotaMinima;
-            NotaMaxima = completaNota + NotaMinima;
-
-            return NotaMaxima;
-        }
+            nota >= Math.Ceiling(NotaMinimaAprovacao * 0.66) ? EnumStatusFinal.Recuperacao : EnumStatusFinal.Reprovado;
 
     }
 }
