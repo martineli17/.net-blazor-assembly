@@ -56,42 +56,6 @@
 
 }
 
-
-@*@if (Alunos != null && Alunos.Any())
-    {
-        <table class="table table-hover table-responsive-md table-borderless">
-            <thead class="thead-light">
-                <tr>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Data Nascimento</th>
-                    <th>Curso</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var aluno in Alunos)
-                {
-                    <tr>
-                        <td title="@aluno.Nome?.ToUpper()">@aluno.Nome?.ToUpper()?.TrySubstring(20)</td>
-                        <td>@aluno.Cpf</td>
-                        <td>@aluno.DataNascimento.ToString("dd/MM/yyyy")</td>
-                        <td title="@aluno.Curso.Nome?.ToUpper()">@aluno.Curso?.Nome?.ToUpper()?.TrySubstring(20)</td>
-                        <td>
-                            <span title="Atualizar" @onclick="(() => GetFormUpdate(aluno))"
-                                  class="oi oi-loop-circular oi-align-center"></span>
-                        </td>
-                        <td>
-                            <span title="Remover" @onclick="(() => DeleteAsync(aluno.Id))"
-                                  class="oi oi-trash text-center oi-align-center"></span>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }*@
-
 @code {
     [Parameter] public bool Atualizar { get; set; }
     [Parameter] public Action<AlunoGetViewModel> CallFormUpdate { get; set; }

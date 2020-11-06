@@ -17,5 +17,16 @@ namespace Apresentation.ViewModels
         public Guid Id { get; set; }
     }
 
+    public class PessoaAddViewModel : BaseAddViewModel
+    {
+        public string Cpf { get; set; }
+        public DateTime DataNascimento { get; set; } = DateTime.Now.AddYears(-18);
+    }
+
+    public class PessoaViewModel : PessoaAddViewModel
+    {
+        public Guid Id { get; set; }
+    }
+
     public interface IBaseViewModel { };
 }

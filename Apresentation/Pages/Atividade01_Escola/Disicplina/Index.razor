@@ -1,12 +1,7 @@
 ﻿@page "/escola/disciplina"
 @using Apresentation.ViewModels.DisciplinaViewModel
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="escola">Escola</a></li>
-        <li class="breadcrumb-item"><a>Disciplina</a></li>
-    </ol>
-</nav>
+<Apresentation.Pages.Atividade01_Escola.Base.Index Tela="Disciplina"/>
 
 <div hidden="@HiddenFormularioAdicionar">
     <FormAddDisciplina OnRefreshList="RefreshListagem" />

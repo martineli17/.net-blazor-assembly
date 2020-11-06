@@ -14,6 +14,8 @@ namespace Repositorio.Contexto
         public DbSet<Disciplina> Disciplina { get; set; }
         public DbSet<Curso> Curso { get; set; }
         public DbSet<AlunoDisciplina> AlunoDisciplina { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Conta> Conta { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

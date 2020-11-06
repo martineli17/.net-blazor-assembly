@@ -1,0 +1,46 @@
+﻿@using Apresentation.ViewModels.ClienteViewModel
+@inject Apresentation.Services.ClienteServices.UpdateClienteService UpdateClienteService
+
+<form>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="Cliente-nome" class="">Nome</label>
+            <input maxlength="60" id="Cliente-nome" @bind="Cliente.Nome" type="text" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="Cliente-cpf" class="">CPF</label>
+            <input maxlength="11" id="Cliente-cpf" @bind="Cliente.Cpf" type="text" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="Cliente-nascimento" class="">Data nascimento</label>
+            <input @bind="Cliente.DataNascimento" id="Cliente-nascimento" type="date" class="form-control" />
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <div class="col-md-1">
+        <button @onclick="CancelSubmit" class="btn btn-purple">
+            Cancelar
+        </button>
+    </div>
+    <div class="col-md-1">
+        <button @onclick="HandleSubmit" class="btn btn-purple">
+            Atualizar
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    [Parameter] public Action OnCancel { get; set; }
+    [Parameter] public ClienteGetViewModel Cliente { get; set; }
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(UpdateClienteService, Enums.EnumTipoSendService.Atualizar, Cliente))
+            OnRefreshList.Invoke();
+    }
+
+    private void CancelSubmit() => OnCancel.Invoke();
+}

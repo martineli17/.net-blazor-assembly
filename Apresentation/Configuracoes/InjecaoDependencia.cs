@@ -1,6 +1,7 @@
 ﻿using Apresentation.Services.AlunoDisciplinaServices;
 using Apresentation.Services.AlunoServices;
 using Apresentation.Services.Base;
+using Apresentation.Services.ClienteServices;
 using Apresentation.Services.CursoServices;
 using Apresentation.Services.DisciplinaServices;
 using Apresentation.Services.Validator;
@@ -35,6 +36,8 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<IAlunoRepositorio, AlunoRepositorio>();
             service.TryAddTransient<IDisciplinaRepositorio, DisciplinaRepositorio>();
             service.TryAddTransient<IAlunoDisciplinaRepositorio, AlunoDisciplinaRepositorio>();
+            service.TryAddTransient<IClienteRepositorio, ClienteRepositorio>();
+            service.TryAddTransient<IContaRepositorio, ContaRepositorio>();
             #endregion
 
             #region Services
@@ -44,6 +47,8 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<IAlunoService, AlunoService>();
             service.TryAddTransient<IDisciplinaService, DisciplinaService>();
             service.TryAddTransient<IAlunoDisciplinaService, AlunoDisciplinaService>();
+            service.TryAddTransient<IClienteService, ClienteService>();
+            service.TryAddTransient<IContaService, ContaService>();
             #endregion
 
             #region Services front
@@ -76,6 +81,13 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<GetAlunoDisciplinaServices>();
             service.TryAddTransient<RemoveAlunoDisciplinaServices>();
             service.TryAddTransient<UpdateAlunoDisciplinaService>();
+            #endregion
+
+            #region
+            service.TryAddTransient<GetClienteService>();
+            service.TryAddTransient<AddClienteService>();
+            service.TryAddTransient<RemoveClienteService>();
+            service.TryAddTransient<UpdateClienteService>();
             #endregion
 
             #endregion

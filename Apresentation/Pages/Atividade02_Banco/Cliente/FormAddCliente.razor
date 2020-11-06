@@ -1,0 +1,36 @@
+﻿@using Apresentation.ViewModels.ClienteViewModel
+@inject Apresentation.Services.ClienteServices.AddClienteService AddClienteService
+
+<form>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="aluno-nome" class="">Nome</label>
+            <input maxlength="60" id="Cliente-nome" @bind="Cliente.Nome" type="text" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="Cliente-cpf" class="">CPF</label>
+            <input maxlength="11" id="Cliente-cpf" @bind="Cliente.Cpf" type="text" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="alunoClientenascimento" class="">Data nascimento</label>
+            <input @bind="Cliente.DataNascimento" id="Cliente-nascimento" type="date" class="form-control" />
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
+        Cadastrar
+    </button>
+</div>
+
+@code {
+    [Parameter] public Action OnRefreshList { get; set; }
+    private ClienteAddViewModel Cliente { get; set; } = new ClienteAddViewModel();
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(AddClienteService, Enums.EnumTipoSendService.Adicionar, Cliente))
+            OnRefreshList.Invoke();
+    }
+}

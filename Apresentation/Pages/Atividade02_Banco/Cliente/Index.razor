@@ -1,19 +1,19 @@
-﻿@page "/escola/aluno"
-@using Apresentation.ViewModels.AlunoViewModel
+﻿@page "/banco/cliente"
+@using Apresentation.ViewModels.ClienteViewModel
 
-<Apresentation.Pages.Atividade01_Escola.Base.Index  Tela="Aluno"/>
+<Apresentation.Pages.Atividade02_Banco.Base.Index Tela="Cliente"/>
 
 <div hidden="@HiddenFormularioAdicionar">
-    <FormAddAluno OnRefreshList="RefreshListagem" />
+    <FormAddCliente OnRefreshList="RefreshListagem" />
 </div>
-@if (AlunoAtualizar != null)
+@if (ClienteAtualizar != null)
 {
     <div hidden="@HiddenFormularioAtualizar">
-        <FormUpdateAluno OnCancel="CallFormularioAdicionar" Aluno="AlunoAtualizar" OnRefreshList="RefreshListagem" />
+        <FormUpdateCliente OnCancel="CallFormularioAdicionar" Cliente="ClienteAtualizar" OnRefreshList="RefreshListagem" />
     </div>
 }
 <div>
-    <ListAlunos CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
+    <ListClientes CallFormUpdate="CallFormularioAtualizar" Atualizar="AtualizarListagem" />
 </div>
 
 
@@ -21,7 +21,7 @@
     private bool AtualizarListagem;
     private string HiddenFormularioAdicionar = null;
     private string HiddenFormularioAtualizar = "hidden";
-    private AlunoGetViewModel AlunoAtualizar = null;
+    private ClienteGetViewModel ClienteAtualizar = null;
 
     private void RefreshListagem()
     {
@@ -31,15 +31,15 @@
 
     private void CallFormularioAdicionar()
     {
-        AlunoAtualizar = null;
+        ClienteAtualizar = null;
         HiddenFormularioAdicionar = null;
         HiddenFormularioAtualizar = "hidden";
         StateHasChanged();
     }
 
-    private void CallFormularioAtualizar(AlunoGetViewModel aluno)
+    private void CallFormularioAtualizar(ClienteGetViewModel aluno)
     {
-        AlunoAtualizar = aluno;
+        ClienteAtualizar = aluno;
         HiddenFormularioAtualizar = null;
         HiddenFormularioAdicionar = "hidden";
         StateHasChanged();

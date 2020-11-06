@@ -23,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Atividade02_Banco\" />
+    <Folder Include="Pages\Atividade02_Banco\Conta\" />
+    <Folder Include="Services\ContaServices\" />
   </ItemGroup>
 
   <ItemGroup>
