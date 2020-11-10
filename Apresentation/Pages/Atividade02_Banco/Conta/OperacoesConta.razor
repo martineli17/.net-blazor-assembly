@@ -1,0 +1,121 @@
+﻿@page "/banco/conta/operacoes"
+<Apresentation.Pages.Atividade02_Banco.Base.Index Tela="Operações da conta" />
+@using Apresentation.ViewModels.ContaViewModel
+@using Dominio.ValuesType
+@using Crosscuting.Extensions
+@inject Apresentation.Services.ContaServices.OperacoesContaService OperacoesContaService
+@inject Apresentation.Services.ContaServices.GetContaService GetContaService
+
+<form>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="Cliente-cpf" class="">Tipo da operação</label>
+            <select @onchange="(x => ChangeContaDestino(x.Value.ToString()))" class="form-control">
+                <option value="Selecione">Selecione</option>
+                @foreach (var operacao in Enum.GetValues(typeof(EnumOperacaoConta)))
+                {
+                    <option value="@operacao.ToString()">@(((Enum)operacao).DisplayName())</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="Cliente" class="">Conta</label>
+            <select id="Cliente" @bind="Operacao.IdConta" class="form-control">
+                <option value="@Guid.Empty">Selecione</option>
+                @if (Contas.HasValue())
+                {
+                    @foreach (var conta in Contas)
+                    {
+                        if (conta.Id == Operacao.IdContaDestino) continue;
+                        <option value="@conta.Id">@conta?.Cliente?.Nome | Conta: @conta.NumeroConta</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="valor" class="">Valor</label>
+            <input id="valor" @bind="Operacao.Valor" type="number" class="form-control" />
+        </div>
+        @if (ExibirContaDestino)
+        {
+            <div class="col-md-3">
+            <label for="Cliente" class="">Conta de destino</label>
+            <select id="Cliente" @bind="Operacao.IdContaDestino" class="form-control">
+                <option value="@Guid.Empty">Selecione</option>
+                @if (Contas.HasValue())
+                {
+                    @foreach (var conta in Contas)
+                    {
+                        if (conta.Id == Operacao.IdConta) continue;
+                        <option value="@conta.Id">@conta?.Cliente?.Nome | Conta: @conta.NumeroConta</option>
+                    }
+                }
+            </select>
+        </div>
+        }
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
+        Realizar operação
+    </button>
+</div>
+
+<table class="table table-hover table-responsive-md table-borderless">
+    <thead class="thead-light">
+        <tr>
+            <th>Cliente</th>
+            <th>Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Contas.HasValue())
+        {
+            foreach (var conta in Contas)
+            {
+
+                <tr>
+                    <td title="@conta.Cliente?.Nome?.ToUpper()">@conta.Cliente?.Nome?.ToUpper()?.TrySubstring(30)</td>
+                    <td>@conta?.Saldo.ToString("N2")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    private bool ExibirContaDestino = false;
+    private ContaOperacoesViewModel Operacao { get; set; } = new ContaOperacoesViewModel();
+    private decimal Saldo;
+    private bool Valido;
+    private IEnumerable<ContaGetViewModel> Contas = new List<ContaGetViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Contas = (IEnumerable<ContaGetViewModel>)await Service
+                 .CallService(GetContaService, Enums.EnumTipoSendService.Listar);
+    }
+
+
+    private async Task HandleSubmit()
+    {
+        if (!Valido) return;
+        await Service.CallService(OperacoesContaService, Enums.EnumTipoSendService.Adicionar, Operacao);
+        Contas = (IEnumerable<ContaGetViewModel>)await Service
+                 .CallService(GetContaService, Enums.EnumTipoSendService.Listar);
+    }
+
+
+    private void ChangeContaDestino(string value)
+    {
+        if (value == "Selecione")
+        {
+            Valido = false;
+            return;
+        }
+        Valido = true;
+        Operacao.Operacao = (EnumOperacaoConta)Enum.Parse(typeof(EnumOperacaoConta), value);
+        ExibirContaDestino = Operacao.Operacao == EnumOperacaoConta.Transferir;
+    }
+}

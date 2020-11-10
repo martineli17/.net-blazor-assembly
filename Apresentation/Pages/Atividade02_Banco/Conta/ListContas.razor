@@ -1,0 +1,66 @@
+﻿@using Apresentation.ViewModels.ContaViewModel
+@using Crosscuting.Extensions
+@inject Apresentation.Services.ContaServices.AddContaService AddContaService
+@inject Apresentation.Services.ContaServices.GetContaService GetContaService
+@inject Apresentation.Services.ContaServices.RemoveContaService RemoveContaService
+
+@if (Contas.HasValue())
+{
+    <table class="table table-hover table-responsive-md table-borderless">
+        <thead class="thead-light">
+            <tr>
+                <th>Cliente</th>
+                <th>CPF</th>
+                <th>Conta</th>
+                <th>Saldo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var conta in Contas)
+            {
+
+                <tr>
+                    <td title="@conta.Cliente?.Nome?.ToUpper()">@conta.Cliente?.Nome?.ToUpper()?.TrySubstring(30)</td>
+                    <td>@conta.Cliente?.Cpf</td>
+                    <td>@conta?.NumeroConta</td>
+                    <td>@conta?.Saldo.ToString("N2")</td>
+                    <td>
+                        <span title="Remover" @onclick="(() => DeleteAsync(conta.Id))"
+                              class="oi oi-trash text-center oi-align-center"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public bool Atualizar { get; set; }
+    private IEnumerable<ContaGetViewModel> Contas = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Contas = (IEnumerable<ContaGetViewModel>)await Service
+            .CallService(GetContaService, Enums.EnumTipoSendService.Listar);
+        StateHasChanged();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Contas = (IEnumerable<ContaGetViewModel>)await Service
+            .CallService(GetContaService, Enums.EnumTipoSendService.Listar);
+        StateHasChanged();
+    }
+
+    private async Task DeleteAsync(Guid id)
+    {
+        if ((bool)await Service.CallService(RemoveContaService, Enums.EnumTipoSendService.Excluir,
+                                new Apresentation.ViewModels.BaseRemoveViewModel { Id = id }))
+        {
+            Contas = (IEnumerable<ContaGetViewModel>)await Service
+             .CallService(GetContaService, Enums.EnumTipoSendService.Listar);
+            StateHasChanged();
+        }
+    }
+}

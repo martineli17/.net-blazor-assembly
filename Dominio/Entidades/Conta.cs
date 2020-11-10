@@ -9,10 +9,13 @@ namespace Dominio.Entidades
         public decimal Saldo { get; private set; }
         public Cliente Cliente { get; private set; }
 
-        public void Sacar(decimal valor)
+        public bool Sacar(decimal valor)
         {
-            if (Saldo >= valor)
-                Saldo -= valor;
+            var valido = Saldo >= valor;
+            Console.WriteLine("SALDO ENTIDADE: " + Saldo);
+            Console.WriteLine(valido);
+            if (valido) Saldo -= valor;
+            return valido;
         }
 
         public void Depositar(decimal valor) => Saldo += valor;

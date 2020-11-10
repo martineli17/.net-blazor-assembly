@@ -2,6 +2,7 @@
 using Apresentation.Services.AlunoServices;
 using Apresentation.Services.Base;
 using Apresentation.Services.ClienteServices;
+using Apresentation.Services.ContaServices;
 using Apresentation.Services.CursoServices;
 using Apresentation.Services.DisciplinaServices;
 using Apresentation.Services.Validator;
@@ -81,6 +82,13 @@ namespace Apresentation.Configuracoes
             service.TryAddTransient<GetAlunoDisciplinaServices>();
             service.TryAddTransient<RemoveAlunoDisciplinaServices>();
             service.TryAddTransient<UpdateAlunoDisciplinaService>();
+            #endregion
+
+            #region Conta
+            service.TryAddTransient<AddContaService>();
+            service.TryAddTransient<RemoveContaService>();
+            service.TryAddTransient<GetContaService>();
+            service.TryAddTransient<OperacoesContaService>();
             #endregion
 
             #region

@@ -9,7 +9,8 @@ namespace Apresentation.Services.ClienteServices
 {
     public class UpdateClienteService : ClienteServiceBase, ISendService
     {
-        public UpdateClienteService(IClienteService alunoService, InjectorServiceBaseApresentation injector) : base(alunoService, injector)
+        public UpdateClienteService(IClienteService contaService, InjectorServiceBaseApresentation injector) 
+            : base(contaService, injector)
         {
         }
 

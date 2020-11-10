@@ -1,0 +1,54 @@
+﻿@page "/banco/conta"
+<Apresentation.Pages.Atividade02_Banco.Base.Index Tela="Conta" />
+@using Apresentation.ViewModels.ContaViewModel
+@using Apresentation.ViewModels.ClienteViewModel
+@using Crosscuting.Extensions
+@inject Apresentation.Services.ContaServices.AddContaService AddContaService
+@inject Apresentation.Services.ClienteServices.GetClienteService GetClienteService
+
+<form>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="Cliente" class="">Cliente</label>
+            <select id="Cliente" @bind="Conta.IdCliente" class="form-control">
+                <option value="@Guid.Empty">Selecione</option>
+                @if (Clientes.HasValue())
+                {
+                    @foreach (var cliente in Clientes)
+                    {
+                        <option value="@cliente.Id">@cliente.Nome</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="aConta" class="">Conta</label>
+            <input maxlength="10" id="Conta" @bind="Conta.NumeroConta" type="text" class="form-control" />
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row justify-content-center m-md-4">
+    <button @onclick="HandleSubmit" class="btn btn-purple">
+        Criar conta
+    </button>
+</div>
+
+<ListContas Atualizar="AtualizarListagem" />
+
+@code {
+    private bool AtualizarListagem = false;
+    private ContaAddViewModel Conta { get; set; } = new ContaAddViewModel();
+    private List<ClienteGetViewModel> Clientes { get; set; } = new List<ClienteGetViewModel>();
+
+    protected override async Task OnInitializedAsync() =>
+       Clientes = (List<ClienteGetViewModel>)await Service.CallService(GetClienteService,
+                                                    Enums.EnumTipoSendService.Listar);
+
+    private async Task HandleSubmit()
+    {
+        if ((bool)await Service.CallService(AddContaService, Enums.EnumTipoSendService.Adicionar, Conta))
+            AtualizarListagem = !AtualizarListagem;
+    }
+}
+

@@ -9,7 +9,8 @@ namespace Apresentation.Services.ClienteServices
 {
     public class GetClienteService : ClienteServiceBase, ISendService
     {
-        public GetClienteService(IClienteService alunoService, InjectorServiceBaseApresentation injector) : base(alunoService, injector)
+        public GetClienteService(IClienteService contaService, InjectorServiceBaseApresentation injector)
+            : base(contaService, injector)
         {
         }
 

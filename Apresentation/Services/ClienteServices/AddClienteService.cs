@@ -8,7 +8,8 @@ namespace Apresentation.Services.ClienteServices
 {
     public class AddClienteService : ClienteServiceBase, ISendService
     {
-        public AddClienteService(IClienteService alunoService, InjectorServiceBaseApresentation injector) : base(alunoService, injector)
+        public AddClienteService(IClienteService contaService, InjectorServiceBaseApresentation injector) 
+            : base(contaService, injector)
         {
         }
 

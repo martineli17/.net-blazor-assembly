@@ -4,18 +4,18 @@ using Dominio.Interfaces.Service;
 using System;
 using System.Threading.Tasks;
 
-namespace Apresentation.Services.ClienteServices
+namespace Apresentation.Services.ContaServices
 {
-    public class RemoveClienteService : ClienteServiceBase, ISendService
+    public class RemoveContaService : ContaServiceBase, ISendService
     {
-        public RemoveClienteService(IClienteService contaService, InjectorServiceBaseApresentation injector)
+        public RemoveContaService(IContaService contaService, InjectorServiceBaseApresentation injector)
             : base(contaService, injector)
         {
         }
 
         public async Task<object> SendService(IBaseViewModel model = null)
         {
-            await ClienteService.RemoveAsync(model == null ? Guid.Empty : ((BaseRemoveViewModel)model).Id);
+            await ContaService.RemoveAsync(model == null ? Guid.Empty : ((BaseRemoveViewModel)model).Id);
             return Injector.Notificador.IsValido();
         }
     }
