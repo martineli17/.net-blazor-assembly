@@ -2,7 +2,7 @@
 
 ## Ferramentas necessárias
 ### Para iniciar essa aplicação, primeiramente é necessário obter o SDK do .NET CORE na versão 3.1 (ou superior). 
-## Além disso, se caso for utilizar o Visual Studio, utilizar a versão 16.8.1 (ou superior).
+### Além disso, se caso for utilizar o Visual Studio, utilizar a versão 16.8.1 (ou superior).
 
 ## Como iniciar
 ### Depois de obter os requisitos acima e baixar a aplicação, será necessário você inicie ela. 
