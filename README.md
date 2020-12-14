@@ -6,7 +6,7 @@
 
 ## Como iniciar
 #### Depois de obter os requisitos acima e baixar a aplicação, será necessário você inicie ela. 
-#### Garanta que o projeto selecionado seja o 'Apresentation' (na aba superior próximo às opções de ambientes de execução).
+#### Garanta que o projeto selecionado seja o 'Apresentation'.
 #### Após isso, selecione o ambiente de execução 'IIS Express' e clique para iniciar a aplicação. 
 
 ## Observações
